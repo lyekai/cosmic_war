@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>罪世界 - 雙軸大振幅漂移晶柱</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      user-select: none;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #030008;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    canvas {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="maleficCanvas"></canvas>
+
+  <script>
+    const canvas = document.getElementById('maleficCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let width, height, cx, cy;
+
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      cx = width / 2;
+      cy = height / 2;
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+
+    // 滑鼠視差設定
+    let mouseX = 0;
+    let mouseY = 0;
+    let targetMouseX = 0;
+    let targetMouseY = 0;
+
+    window.addEventListener('mousemove', (e) => {
+      targetMouseX = (e.clientX - cx) / cx;
+      targetMouseY = (e.clientY - cy) / cy;
+    });
+
+    // ==========================================
+    // 1. 浩瀚星塵背景設定 (1200顆)
+    // ==========================================
+    const STAR_COUNT = 1200;
+    const stars = [];
+
+    class Star {
+      constructor() {
+        this.reset(true);
+      }
+
+      reset(initial = false) {
+        this.x = (Math.random() - 0.5) * width * 2.5;
+        this.y = (Math.random() - 0.5) * height * 2.5;
+        this.z = initial ? Math.random() * 1500 : 1500;
+        
+        this.speed = Math.random() * 0.5 + 0.3; // 緩慢流速
+        this.size = Math.random() * 1.8 + 0.5;
+        
+        const colors = [
+          'rgba(255, 255, 255, ',
+          'rgba(215, 170, 255, ',
+          'rgba(180, 130, 255, ',
+          'rgba(120, 190, 255, ',
+          'rgba(255, 120, 220, '
+        ];
+        this.colorPrefix = colors[Math.floor(Math.random() * colors.length)];
+        this.alpha = Math.random() * 0.7 + 0.3;
+        this.twinkleSpeed = Math.random() * 0.02 + 0.005;
+        this.twinkleDir = Math.random() > 0.5 ? 1 : -1;
+      }
+
+      update() {
+        this.z -= this.speed;
+        if (this.z <= 1) this.reset(false);
+
+        this.alpha += this.twinkleSpeed * this.twinkleDir;
+        if (this.alpha >= 1 || this.alpha <= 0.2) {
+          this.twinkleDir *= -1;
+        }
+      }
+
+      draw() {
+        const fov = 400;
+        const scale = fov / (fov + this.z);
+        const px = (this.x + mouseX * 30) * scale + cx;
+        const py = (this.y + mouseY * 30) * scale + cy;
+
+        if (px < -50 || px > width + 50 || py < -50 || py > height + 50) return;
+
+        const currentSize = Math.max(0.1, this.size * scale * 2.2);
+
+        ctx.fillStyle = this.colorPrefix + (this.alpha * Math.min(1, scale * 2)).toFixed(2) + ')';
+        ctx.beginPath();
+        ctx.arc(px, py, currentSize, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < STAR_COUNT; i++) {
+      stars.push(new Star());
+    }
+
+    // ==========================================
+    // 2. 大振幅雙軸移動破碎晶柱
+    // ==========================================
+    const PILLAR_COUNT = 30;
+    const pillars = [];
+
+    class FracturedPillar {
+      constructor(index) {
+        this.init(index);
+      }
+
+      init(index) {
+        // 基礎定位：四周環形分佈
+        const angle = (index / PILLAR_COUNT) * Math.PI * 2 + (Math.random() - 0.5) * 0.2;
+        const minRadius = 1200; // 保留中央怪物空間
+        const maxRadius = 2000;
+        const radius = minRadius + Math.random() * (maxRadius - minRadius);
+
+        // 基準原點 (Base Position)
+        this.baseX = Math.cos(angle) * radius;
+        this.baseY = Math.sin(angle) * (radius * 0.65);
+        this.z = Math.random() * 700 + 50;
+
+        // 柱體尺寸
+        this.w = Math.random() * 32 + 22;
+        this.h = Math.random() * 290 + 790;
+        this.d = this.w * (Math.random() * 0.4 + 0.8);
+
+        // --------------------------------------------------
+        // 大振幅 X-Y 雙軸動態位移參數
+        // --------------------------------------------------
+        this.floatOffset1 = Math.random() * Math.PI * 2;
+        this.floatOffset2 = Math.random() * Math.PI * 2;
+        
+        // 擺動速率 (維持優雅緩慢但流暢)
+        this.speedX = Math.random() * 0.0012 + 0.008;
+        this.speedY = Math.random() * 0.0015 + 0.009;
+
+        // 位移振幅 (Amplified Drift Range)
+        this.amplitudeX = Math.random() * 80 + 70;  // X軸左右飄移 ±70~150px
+        this.amplitudeY = Math.random() * 60 + 50;  // Y軸上下漂移 ±50~110px
+
+        // 動態座標實時紀錄
+        this.x = this.baseX;
+        this.y = this.baseY;
+
+        // 3D 傾角
+        this.rotY = (Math.random() - 0.5) * 0.8;
+        this.tiltZ = (Math.random() - 0.5) * 0.25;
+
+        // 破碎斷面與鋸齒
+        this.topFracture = (Math.random() - 0.5) * this.w * 0.6;
+        this.bottomFracture = (Math.random() - 0.5) * this.w * 0.6;
+        
+        this.energyLineX = (Math.random() - 0.5) * 0.6;
+        this.opacity = Math.random() * 0.35 + 0.45;
+      }
+
+      update(time) {
+        // 使用 Lissajous 曲線公式實現 X/Y 雙軸大範圍動態漂移
+        this.x = this.baseX + Math.sin(time * this.speedX * 60 + this.floatOffset1) * this.amplitudeX;
+        this.y = this.baseY + Math.cos(time * this.speedY * 60 + this.floatOffset2) * this.amplitudeY;
+      }
+
+      project(vx, vy, vz) {
+        let cosY = Math.cos(this.rotY), sinY = Math.sin(this.rotY);
+        let x1 = vx * cosY - vz * sinY;
+        let z1 = vx * sinY + vz * cosY;
+
+        let cosZ = Math.cos(this.tiltZ), sinZ = Math.sin(this.tiltZ);
+        let x2 = x1 * cosZ - vy * sinZ;
+        let y2 = x1 * sinZ + vy * cosZ;
+
+        let worldX = x2 + this.x + mouseX * 50;
+        let worldY = y2 + this.y + mouseY * 50;
+        let worldZ = z1 + this.z;
+
+        const fov = 450;
+        const scale = fov / (fov + worldZ);
+        return {
+          x: worldX * scale + cx,
+          y: worldY * scale + cy,
+          scale: scale
+        };
+      }
+
+      draw(time) {
+        const hw = this.w / 2;
+        const hh = this.h / 2;
+        const hd = this.d / 2;
+
+        const p1 = this.project(-hw, -hh + this.topFracture, hd);
+        const p2 = this.project(hw, -hh, hd);
+        const p3 = this.project(hw, hh, hd);
+        const p4 = this.project(-hw, hh + this.bottomFracture, hd);
+
+        const p5 = this.project(-hw, -hh, -hd);
+        const p6 = this.project(hw, -hh + this.topFracture, -hd);
+        const p7 = this.project(hw, hh + this.bottomFracture, -hd);
+        const p8 = this.project(-hw, hh, -hd);
+
+        const scale = p1.scale;
+
+        // 1. 半透明主表面與水晶質感
+        const frontGrad = ctx.createLinearGradient(p1.x, p1.y, p3.x, p3.y);
+        frontGrad.addColorStop(0, `rgba(0, 0, 0, ${this.opacity * 0.85})`);
+        frontGrad.addColorStop(0.3, `rgba(25, 15, 0, ${this.opacity * 0.25})`);
+        frontGrad.addColorStop(0.7, `rgba(55, 40, 0, ${this.opacity * 0.15})`);
+        frontGrad.addColorStop(1, `rgba(0, 0, 0, ${this.opacity * 0.75})`);
+
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.lineTo(p3.x, p3.y);
+        ctx.lineTo(p4.x, p4.y);
+        ctx.closePath();
+        ctx.fillStyle = frontGrad;
+        ctx.fill();
+
+        // 側邊暗部透光面
+        const sideGrad = ctx.createLinearGradient(p2.x, p2.y, p6.x, p6.y);
+        sideGrad.addColorStop(0, `rgba(255, 255, 255, ${this.opacity * 0.65})`);
+        sideGrad.addColorStop(1, `rgba(180, 200, 240, ${this.opacity * 0.2})`);
+
+        ctx.beginPath();
+        ctx.moveTo(p2.x, p2.y);
+        ctx.lineTo(p6.x, p6.y);
+        ctx.lineTo(p7.x, p7.y);
+        ctx.lineTo(p3.x, p3.y);
+        ctx.closePath();
+        ctx.fillStyle = sideGrad;
+        ctx.fill();
+
+        // 頂部破碎截面
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.lineTo(p6.x, p6.y);
+        ctx.lineTo(p5.x, p5.y);
+        ctx.closePath();
+        ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity * 0.6})`;
+        ctx.fill();
+
+        // 2. 內部白色脈波發光核心
+        const pCoreTop = this.project(hw * this.energyLineX, -hh, 0);
+        const pCoreBottom = this.project(hw * this.energyLineX, hh, 0);
+
+        const corePulse = Math.sin(time * 3 + this.floatOffset1) * 0.2 + 0.8;
+        ctx.beginPath();
+        ctx.moveTo(pCoreTop.x, pCoreTop.y);
+        ctx.lineTo(pCoreBottom.x, pCoreBottom.y);
+        ctx.strokeStyle = `rgba(255, 255, 255, ${0.85 * corePulse * scale})`;
+        ctx.lineWidth = 1.5 * scale;
+        ctx.shadowColor = 'rgba(255, 255, 255, 0.9)';
+        ctx.shadowBlur = 12 * scale;
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+
+        // 3. 晶體銳利邊框與節點
+        ctx.strokeStyle = `rgba(255, 255, 255, ${0.9 * scale})`;
+        ctx.lineWidth = 1.2 * scale;
+
+        const drawEdge = (pa, pb) => {
+          ctx.beginPath();
+          ctx.moveTo(pa.x, pa.y);
+          ctx.lineTo(pb.x, pb.y);
+          ctx.stroke();
+        };
+
+        drawEdge(p1, p2);
+        drawEdge(p2, p3);
+        drawEdge(p3, p4);
+        drawEdge(p4, p1);
+        drawEdge(p2, p6);
+        drawEdge(p3, p7);
+        drawEdge(p1, p5);
+
+        // 晶角高光點
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(p2.x, p2.y, 2 * scale, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < PILLAR_COUNT; i++) {
+      pillars.push(new FracturedPillar(i));
+    }
+
+    let time = 0;
+
+    function render() {
+      time += 0.008;
+
+      mouseX += (targetMouseX - mouseX) * 0.05;
+      mouseY += (targetMouseY - mouseY) * 0.05;
+
+      ctx.fillStyle = '#030008';
+      ctx.fillRect(0, 0, width, height);
+
+      // 1. 浩瀚紫藍色星雲
+      const nebulaGrad1 = ctx.createRadialGradient(
+        cx + mouseX * 80, cy + mouseY * 80, 50,
+        cx + mouseX * 80, cy + mouseY * 80, Math.max(width, height) * 0.8
+      );
+      nebulaGrad1.addColorStop(0, 'rgba(90, 20, 140, 0.38)');
+      nebulaGrad1.addColorStop(0.4, 'rgba(45, 10, 80, 0.25)');
+      nebulaGrad1.addColorStop(0.7, 'rgba(15, 5, 40, 0.15)');
+      nebulaGrad1.addColorStop(1, 'rgba(3, 0, 8, 0)');
+
+      ctx.fillStyle = nebulaGrad1;
+      ctx.fillRect(0, 0, width, height);
+
+      // 2. 次級流動星雲
+      const secX = cx + Math.cos(time * 0.5) * 150 + mouseX * 50;
+      const secY = cy + Math.sin(time * 0.3) * 100 + mouseY * 50;
+      const nebulaGrad2 = ctx.createRadialGradient(secX, secY, 20, secX, secY, width * 0.5);
+      nebulaGrad2.addColorStop(0, 'rgba(190, 30, 160, 0.18)');
+      nebulaGrad2.addColorStop(0.5, 'rgba(30, 80, 180, 0.12)');
+      nebulaGrad2.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+      ctx.fillStyle = nebulaGrad2;
+      ctx.fillRect(0, 0, width, height);
+
+      // 3. 星塵渲染
+      stars.forEach(star => {
+        star.update();
+        star.draw();
+      });
+
+      // 4. 大振幅動態晶柱渲染 (依 Z 軸深度排序)
+      pillars.sort((a, b) => b.z - a.z);
+      pillars.forEach(pillar => {
+        pillar.update(time);
+        pillar.draw(time);
+      });
+
+      requestAnimationFrame(render);
+    }
+
+    render();
+  </script>
+</body>

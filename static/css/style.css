@@ -1,0 +1,449 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+}
+
+body, html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Noto Sans TC', sans-serif;
+    background-color: #010105;
+    color: #ffffff;
+}
+
+#starfield {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.view-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.view-container.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(1.05);
+}
+
+/* ==========================================
+    1. 置中主選單排版
+    ========================================== */
+#home-view {
+    text-align: center;
+    padding: 20px;
+}
+
+.title-group {
+    margin-bottom: 40px;
+    z-index: 20;
+}
+
+.main-title-text {
+    font-family: 'Orbitron', 'Noto Sans TC', sans-serif;
+    font-size: 4em;
+    font-weight: 900;
+    letter-spacing: 4px;
+    background: linear-gradient(180deg, #ffffff 20%, #a855f7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 25px rgba(168, 85, 247, 0.6));
+    margin-bottom: 10px;
+}
+
+.sub-title-text {
+    font-size: 16px;
+    letter-spacing: 8px;
+    color: #00f2fe;
+    text-transform: uppercase;
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(0, 242, 254, 0.8);
+}
+
+.menu-center-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 320px;
+    z-index: 20;
+    margin-bottom: 50px;
+}
+
+.menu-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 16px 24px;
+    border-radius: 12px;
+    background: rgba(20, 10, 40, 0.7);
+    border: 1.5px solid rgba(168, 85, 247, 0.4);
+    backdrop-filter: blur(12px);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    color: #e2d1ff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.menu-btn:hover {
+    background: linear-gradient(135deg, #7b2cbf, #00f2fe);
+    border-color: #ffffff;
+    color: #ffffff;
+    transform: translateY(-3px);
+    box-shadow: 0 0 30px rgba(0, 242, 254, 0.8);
+}
+
+.menu-btn.primary {
+    background: linear-gradient(135deg, #6d28d9, #9333ea);
+    border-color: rgba(216, 180, 254, 0.8);
+    color: #ffffff;
+}
+
+.menu-btn-text .zh {
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 2px;
+}
+
+/* ==========================================
+    2. 3D 完美遮蔽星球與土星環畫布
+    ========================================== */
+.epic-planet-stage {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+#epic-planet-canvas {
+    width: 700px;
+    height: 700px;
+}
+
+/* ==========================================
+    3. 宇宙星系地圖 (Map View)
+    ========================================== */
+#map-view {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+}
+
+.map-header {
+    position: absolute;
+    top: 40px;
+    left: 50px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    z-index: 20;
+}
+
+.back-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1.5px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+    backdrop-filter: blur(8px);
+    transition: all 0.2s ease;
+}
+
+.back-btn:hover {
+    background: #ffffff;
+    color: #000000;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+}
+
+.planets-stage {
+    display: flex;
+    width: 90%;
+    max-width: 1200px;
+    justify-content: space-between;
+    align-items: center;
+    height: 60vh;
+    position: relative;
+    z-index: 10;
+}
+
+.planet-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    animation: floatPlanet 4s ease-in-out infinite alternate;
+}
+
+.planet-node:nth-child(even) { animation-delay: -2s; }
+.planet-node:hover { transform: scale(1.2) translateY(-10px); }
+
+@keyframes floatPlanet {
+    0% { transform: translateY(0px); }
+    100% { transform: translateY(-15px); }
+}
+
+.planet-sphere {
+    border-radius: 50%;
+    position: relative;
+    box-shadow: inset -20px -20px 40px rgba(0,0,0,0.9), 0 0 30px rgba(0,0,0,0.8);
+    transition: box-shadow 0.3s ease;
+}
+
+.planet-node:hover .planet-sphere {
+    box-shadow: inset -20px -20px 40px rgba(0,0,0,0.9), 0 0 50px rgba(0, 242, 254, 0.8);
+}
+
+.planet-label {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    background: rgba(10, 5, 25, 0.85);
+    padding: 6px 18px;
+    border-radius: 20px;
+    border: 1px solid rgba(168, 85, 247, 0.4);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+.p-1 { top: -40px; }
+.p-1 .planet-sphere { width: 120px; height: 120px; background: radial-gradient(circle at 30% 30%, #f43f5e, #be123c 50%, #4c0519 100%); }
+
+.p-2 { top: 40px; }
+.p-2 .planet-sphere { width: 140px; height: 140px; background: radial-gradient(circle at 30% 30%, #2dd4bf, #0f766e 50%, #042f2e 100%); }
+
+.p-3 { top: -20px; }
+.p-3 .planet-sphere { width: 105px; height: 105px; background: radial-gradient(circle at 30% 30%, #e0f2fe, #7dd3fc 50%, #0369a1 100%); }
+
+.p-4 { top: 50px; }
+.p-4 .planet-sphere { width: 130px; height: 130px; background: radial-gradient(circle at 30% 30%, #e879f9, #a21caf 50%, #581c87 100%); }
+
+.p-5 { top: -40px; }
+.p-5 .planet-sphere { width: 155px; height: 155px; background: radial-gradient(circle at 30% 30%, #fbbf24, #d97706 50%, #78350f 100%); }
+
+
+/* ==========================================
+    4. 彈窗 Modal
+    ========================================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-card {
+    background: rgba(15, 8, 30, 0.95);
+    border: 2px solid rgba(168, 85, 247, 0.6);
+    border-radius: 20px;
+    padding: 40px;
+    width: 480px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 0 60px rgba(168, 85, 247, 0.4);
+    transform: scale(0.85);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal-overlay.active .modal-card {
+    transform: scale(1);
+}
+
+.modal-title {
+    font-size: 24px;
+    font-weight: 900;
+    color: #38bdf8;
+    margin-bottom: 25px;
+    letter-spacing: 2px;
+    text-shadow: 0 0 15px rgba(56, 189, 248, 0.6);
+}
+
+.stage-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
+
+.stage-item {
+    background: rgba(40, 20, 70, 0.8);
+    border: 1.5px solid rgba(168, 85, 247, 0.4);
+    padding: 16px 20px;
+    border-radius: 12px;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.stage-item:hover {
+    background: linear-gradient(135deg, #7b2cbf, #00f2fe);
+    border-color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(0, 242, 254, 0.8);
+}
+
+.modal-close-btn {
+    margin-top: 25px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #aaa;
+    padding: 8px 24px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.modal-close-btn:hover {
+    color: #fff;
+    border-color: #fff;
+}
+
+/* ==========================================
+    5. 質感浮動提示框 (Toast Notification)
+    ========================================== */
+#toast-notification {
+    position: fixed;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%) translateY(30px);
+    background: rgba(15, 10, 35, 0.9);
+    border: 1.5px solid rgba(0, 242, 254, 0.8);
+    color: #ffffff;
+    padding: 14px 28px;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    box-shadow: 0 0 30px rgba(0, 242, 254, 0.5), inset 0 0 10px rgba(0, 242, 254, 0.3);
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+#toast-notification.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+@media screen and (max-width: 768px) {
+  .main-title-text {
+    font-size: 2.2em;
+  }
+  .sub-title-text {
+    font-size: 0.7em;
+    letter-spacing: 4px;
+  }
+  .menu-center-list {
+    width: 80%;
+  }
+
+  .map-header {
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .map-header h2 {
+    font-size: 18px !important;
+  }
+
+  /* 確保地圖舞台永遠在手機畫面內，不產生滾動條 */
+  .planets-stage {
+    width: 100%;
+    height: 75vh;
+    max-width: 100%;
+    /* 核心：改為直向、由下往上排 */
+    flex-direction: column-reverse;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0;
+    margin-top: 30px;
+  }
+
+  /* 五顆星球直向排列時的「左右錯開」位移效果 */
+  .planet-node.p-1 { top: auto; transform: translateX(-40px); }
+  .planet-node.p-2 { top: auto; transform: translateX(45px); }
+  .planet-node.p-3 { top: auto; transform: translateX(-35px); }
+  .planet-node.p-4 { top: auto; transform: translateX(40px); }
+  .planet-node.p-5 { top: auto; transform: translateX(-25px); }
+
+  /* 消除電腦版的上下亂數位移，改由手機端的左右錯開接管 */
+  .planet-node {
+    animation: none; /* 手機版固定以策安全，或可改用輕量上下浮動 */
+  }
+
+  /* 將星球大小精準縮小兩倍（約 0.5 倍）並維持高亮度與陰影 */
+  .p-1 .planet-sphere { width: 60px; height: 60px; }
+  .p-2 .planet-sphere { width: 70px; height: 70px; }
+  .p-3 .planet-sphere { width: 52px; height: 52px; }
+  .p-4 .planet-sphere { width: 65px; height: 65px; }
+  .p-5 .planet-sphere { width: 78px; height: 78px; }
+
+    /* 維持星球的高亮度光暈與立體感 */
+    .planet-sphere {
+        box-shadow: inset -10px -10px 20px rgba(0,0,0,0.8), 0 0 20px rgba(255,255,255,0.4);
+    }
+
+    /* 將星球下方的文字標籤縮小兩倍並貼近星球 */
+    .planet-label {
+        margin-top: 6px;
+        font-size: 11px;
+        padding: 3px 10px;
+        letter-spacing: 1px;
+    }
+  .modal-card {
+        width: 90%;
+    }
+}

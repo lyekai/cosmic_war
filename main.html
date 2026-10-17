@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>國中數學 RPG - 罪世界異空間</title>
+  <link rel="stylesheet" href="/static/css/main.css">
+</head>
+<body>
+
+  <!-- 全螢幕護盾圖片層 -->
+  <img id="shield-image-layer" src="/static/image/shield.png" alt="護盾特效">
+
+  <!-- 嵌入動態背景 -->
+  <iframe id="bg-frame" src="background.html"></iframe>
+
+  <!-- 遊戲主畫面 -->
+  <div class="game-container" id="gameContainer">
+    
+    <!-- 怪物區 -->
+    <div class="monsters-arena" id="monstersArena">
+      
+      <!-- 第一關容器 -->
+      <div class="stage-1-container" id="stage1Container">
+        <div class="monster-unit stage-1-unit" data-index="0" data-hp="300" data-cd="4" data-maxcd="4" data-atk="15" id="monsterUnit0">
+          <div class="monster-name">變異真菌</div>
+          <div class="hp-bar-container">
+            <div class="hp-bar-fill" id="monsterHp0" style="width: 100%;"></div>
+          </div>
+          <div class="monster-img-wrapper">
+            <div class="monster-cd" id="monsterCd0">CD: 4</div>
+            <img src="/static/enemies/變異真菌.png" alt="變異真菌" class="monster-img">
+          </div>
+        </div>
+
+        <div class="monster-unit stage-1-unit" data-index="1" data-hp="300" data-cd="3" data-maxcd="3" data-atk="15" id="monsterUnit1">
+          <div class="monster-name">變異真菌</div>
+          <div class="hp-bar-container">
+            <div class="hp-bar-fill" id="monsterHp1" style="width: 100%;"></div>
+          </div>
+          <div class="monster-img-wrapper">
+            <div class="monster-cd" id="monsterCd1">CD: 3</div>
+            <img src="/static/enemies/變異真菌.png" alt="變異真菌" class="monster-img">
+          </div>
+        </div>
+      </div>
+
+      <!-- 第二關容器 -->
+      <div class="stage-2-container" id="stage2Container">
+        <div class="monster-unit stage-2-unit" data-index="2" data-hp="300" data-cd="3" data-maxcd="3" data-atk="15" id="monsterUnit2">
+          <div class="monster-name">變異真菌</div>
+          <div class="hp-bar-container">
+            <div class="hp-bar-fill" id="monsterHp2" style="width: 100%;"></div>
+          </div>
+          <div class="monster-img-wrapper">
+            <div class="monster-cd" id="monsterCd2">CD: 3</div>
+            <img src="/static/enemies/變異真菌.png" alt="變異真菌" class="monster-img">
+          </div>
+        </div>
+
+        <div class="monster-unit stage-2-unit" data-index="3" data-hp="300" data-cd="4" data-maxcd="4" data-atk="15" id="monsterUnit3">
+          <div class="monster-name">變異真菌</div>
+          <div class="hp-bar-container">
+            <div class="hp-bar-fill" id="monsterHp3" style="width: 100%;"></div>
+          </div>
+          <div class="monster-img-wrapper">
+            <div class="monster-cd" id="monsterCd3">CD: 4</div>
+            <img src="/static/enemies/變異真菌.png" alt="變異真菌" class="monster-img">
+          </div>
+        </div>
+
+        <div class="monster-unit stage-2-unit" data-index="4" data-hp="300" data-cd="3" data-maxcd="3" data-atk="15" id="monsterUnit4">
+          <div class="monster-name">變異真菌</div>
+          <div class="hp-bar-container">
+            <div class="hp-bar-fill" id="monsterHp4" style="width: 100%;"></div>
+          </div>
+          <div class="monster-img-wrapper">
+            <div class="monster-cd" id="monsterCd4">CD: 3</div>
+            <img src="/static/enemies/變異真菌.png" alt="變異真菌" class="monster-img">
+          </div>
+        </div>
+      </div>
+
+      <!-- 第三關容器 -->
+      <div class="stage-3-container" id="stage3Container">
+        <div class="monster-unit stage-3-unit" data-index="5" data-hp="300" data-cd="2" data-maxcd="2" data-atk="15" id="monsterUnit5">
+          <div class="monster-name">變異真菌</div>
+          <div class="hp-bar-container">
+            <div class="hp-bar-fill" id="monsterHp5" style="width: 100%;"></div>
+          </div>
+          <div class="monster-img-wrapper">
+            <div class="monster-cd" id="monsterCd5">CD: 2</div>
+            <img src="/static/enemies/變異真菌.png" alt="變異真菌" class="monster-img">
+          </div>
+        </div>
+
+        <div class="monster-unit stage-3-unit" data-index="6" data-hp="1000" data-cd="4" data-maxcd="4" data-atk="50" id="monsterUnit6">
+          <div class="monster-name" style="color: #ff33cc;">虛空魔菌</div>
+          <div class="hp-bar-container">
+            <div class="hp-bar-fill" id="monsterHp6" style="width: 100%; background: linear-gradient(90deg, #b5179e, #f72585);"></div>
+          </div>
+          <div class="boss-img-wrapper">
+            <div class="monster-cd" id="monsterCd6">CD: 4</div>
+            <img src="/static/enemies/虛空魔菌.png" alt="虛空魔菌" class="monster-img boss-aura">
+          </div>
+        </div>
+
+        <div class="monster-unit stage-3-unit" data-index="7" data-hp="300" data-cd="2" data-maxcd="2" data-atk="15" id="monsterUnit7">
+          <div class="monster-name">變異真菌</div>
+          <div class="hp-bar-container">
+            <div class="hp-bar-fill" id="monsterHp7" style="width: 100%;"></div>
+          </div>
+          <div class="monster-img-wrapper">
+            <div class="monster-cd" id="monsterCd7">CD: 2</div>
+            <img src="/static/enemies/變異真菌.png" alt="變異真菌" class="monster-img">
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 玩家區 -->
+    <div class="player-section">
+      <div class="player-hp-wrapper">
+        <div class="player-hp-label">PLAYER TEAM HP <span id="shieldLabel" style="color:#00ffff; font-size:11px; margin-left:8px;"></span></div>
+        <div class="player-hp-container">
+          <div class="player-hp-fill" id="playerHpFill" style="width: 100%;"></div>
+          <div class="player-hp-text" id="playerHpText">100 / 100</div>
+        </div>
+      </div>
+
+      <div class="player-slots" id="playerSlots">
+        <div class="player-slot"><img src="/static/image/dust.png" alt="隊員"></div>
+        <div class="player-slot"><img src="/static/image/dust.png" alt="隊員"></div>
+        <div class="player-slot"><img src="/static/image/dust.png" alt="隊員"></div>
+        <div class="player-slot"><img src="/static/image/dust.png" alt="隊員"></div>
+        
+        <div class="player-slot">
+          <img src="/static/image/dust.png" alt="隊員">
+          <div class="skill-book-container disabled" id="skillBookBtn">
+            <div class="magic-smoke"></div>
+            <div class="magic-smoke"></div>
+            <div class="magic-smoke"></div>
+            <img src="/static/image/book.png" alt="技能書" class="skill-book-btn">
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 行動選單彈窗層 -->
+  <div id="action-modal-overlay">
+    <div class="action-menu-panel" id="actionMenuPanel">
+      <div class="action-card" id="attackActionCard">
+        <div class="action-sticker">⚔️</div>
+        <div class="action-label">攻擊</div>
+      </div>
+      <div class="action-card" id="defendActionCard">
+        <div class="action-sticker">🛡️</div>
+        <div class="action-label">防禦</div>
+      </div>
+      <div class="action-card" id="healActionCard">
+        <div class="action-sticker">💖</div>
+        <div class="action-label">回復</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 數學題目彈窗層 -->
+  <div id="math-modal-overlay">
+    <div class="math-modal-panel">
+      <div class="math-instruction" id="mathInstructionText">選擇的選項數值，將成為你的攻擊力</div>
+      <div class="math-options-grid" id="mathOptionsGrid"></div>
+      <button class="math-confirm-btn" id="mathConfirmBtn">確認</button>
+    </div>
+  </div>
+
+  <!-- 劇情橫幅對話框 -->
+  <div id="story-banner">
+    <img src="/static/image/role.png" alt="角色" class="story-role-img">
+    <div class="story-text" id="storyText">沒想到竟然就穿越到了這裡...</div>
+    <div class="story-next-hint">NEXT ▶</div>
+  </div>
+
+  <!-- BATTLE 過場動畫層 -->
+  <div id="battle-intro-overlay">
+    <div class="battle-intro-text" id="battleIntroText">BATTLE 01/03</div>
+  </div>
+
+  <script>
+    const skillBookBtn = document.getElementById('skillBookBtn');
+    const modalOverlay = document.getElementById('action-modal-overlay');
+    const attackActionCard = document.getElementById('attackActionCard');
+    const defendActionCard = document.getElementById('defendActionCard');
+    const healActionCard = document.getElementById('healActionCard');
+    
+    const mathModalOverlay = document.getElementById('math-modal-overlay');
+    const mathInstructionText = document.getElementById('mathInstructionText');
+    const mathOptionsGrid = document.getElementById('mathOptionsGrid');
+    const mathConfirmBtn = document.getElementById('mathConfirmBtn');
+    const monsterUnits = document.querySelectorAll('.monster-unit');
+    const playerSlots = document.getElementById('playerSlots');
+    const gameContainer = document.getElementById('gameContainer');
+    const shieldImageLayer = document.getElementById('shield-image-layer');
+    const shieldLabel = document.getElementById('shieldLabel');
+
+    const storyBanner = document.getElementById('story-banner');
+    const storyText = document.getElementById('storyText');
+    const battleIntroOverlay = document.getElementById('battle-intro-overlay');
+    const battleIntroText = document.getElementById('battleIntroText');
+
+    let selectedValue = null;
+    let targetedMonsterIndex = null;
+    let isAttacking = false;
+    let currentActionType = 'attack';
+
+    let playerHp = 100;
+    const maxPlayerHp = 100;
+    let currentShield = 0;
+
+    let storyStage = 0;
+    const storyDialogues = [
+      "沒想到竟然就穿越到了這裡...",
+      "這個破碎的世界...",
+      "有東西在靠近！要上囉，挑戰者"
+    ];
+
+    const finalStageDialogues = [
+      "感受到了一股不祥的氣息...要來了...",
+      "是操控這些真菌的怪物...阻止他！挑戰者"
+    ];
+
+    function initStory() {
+      storyBanner.classList.add('active');
+    }
+    window.addEventListener('DOMContentLoaded', initStory);
+
+    function handleStoryAdvance(e) {
+      if (mathModalOverlay.classList.contains('active') || modalOverlay.classList.contains('active')) return;
+
+      // 遊戲失敗狀態下的點擊：返回地圖 (假設地圖頁面為 index.html)
+      if (storyStage === 999) {
+        window.location.href = 'index.html';
+        return;
+      }
+
+      // 遊戲通關狀態下的點擊：返回地圖
+      if (storyStage === 13) {
+        window.location.href = 'index.html';
+        return;
+      }
+
+      if (storyStage === 0 || storyStage === 1 || storyStage === 2) {
+        storyStage++;
+        if (storyStage < 3) {
+          storyText.textContent = storyDialogues[storyStage];
+        } else {
+          storyBanner.classList.remove('active');
+          playBattleIntroAnimation("BATTLE 01/03", 1);
+        }
+      } else if (storyStage === 4) {
+        storyBanner.classList.remove('active');
+        skillBookBtn.classList.remove('disabled');
+        storyStage = 5; 
+      } else if (storyStage === 6) {
+        storyBanner.classList.remove('active');
+        playBattleIntroAnimation("BATTLE 02/03", 2);
+      } else if (storyStage === 9) {
+        storyText.textContent = finalStageDialogues[1];
+        storyStage = 10;
+      } else if (storyStage === 10) {
+        storyBanner.classList.remove('active');
+        playBattleIntroAnimation("BATTLE 03/03", 3);
+      }
+    }
+
+    window.addEventListener('click', handleStoryAdvance);
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'Space') {
+        e.preventDefault();
+        handleStoryAdvance(e);
+      }
+    });
+
+    function playBattleIntroAnimation(text, stageNum) {
+      battleIntroText.textContent = text;
+      battleIntroOverlay.style.display = 'flex';
+
+      setTimeout(() => {
+        battleIntroOverlay.style.display = 'none';
+
+        if (stageNum === 1) {
+          document.getElementById('monsterUnit0').classList.add('visible');
+          setTimeout(() => {
+            document.getElementById('monsterUnit1').classList.add('visible');
+          }, 400);
+
+          setTimeout(() => {
+            storyText.textContent = "點擊右下角的魔法書，它將賦予你力量！";
+            storyBanner.classList.add('active');
+            storyStage = 4;
+          }, 1000);
+        } else if (stageNum === 2) {
+          document.getElementById('stage1Container').style.display = 'none';
+          document.getElementById('stage2Container').style.display = 'flex';
+
+          setTimeout(() => {
+            document.getElementById('monsterUnit2').classList.add('visible');
+            setTimeout(() => {
+              document.getElementById('monsterUnit3').classList.add('visible');
+              setTimeout(() => {
+                document.getElementById('monsterUnit4').classList.add('visible');
+                skillBookBtn.classList.remove('disabled');
+                storyStage = 8;
+              }, 400);
+            }, 400);
+          }, 100);
+        } else if (stageNum === 3) {
+          document.getElementById('stage2Container').style.display = 'none';
+          document.getElementById('stage3Container').style.display = 'flex';
+
+          setTimeout(() => {
+            document.getElementById('monsterUnit5').classList.add('visible');
+            setTimeout(() => {
+              document.getElementById('monsterUnit6').classList.add('visible');
+              setTimeout(() => {
+                document.getElementById('monsterUnit7').classList.add('visible');
+                skillBookBtn.classList.remove('disabled');
+                storyStage = 12;
+              }, 400);
+            }, 400);
+          }, 100);
+        }
+
+      }, 2000);
+    }
+
+    // ==========================================
+    // 自動隨機生成數學題目的核心函式
+    // ==========================================
+    function getRandomInt(min, max) {
+      return Math.floor((Math.random() * (max - min + 1)) + min)*1000;
+    }
+
+    function generateRandomMathProblem(targetValue) {
+      let n1 = getRandomInt(-100, 100);
+      let n2 = getRandomInt(-100, 100);
+      let n3 = getRandomInt(-100, 100);
+      let n4 = getRandomInt(-100, 100);
+
+      let ops = ['+', '-'];
+      let op1 = ops[Math.floor(Math.random() * ops.length)];
+      let op2 = ops[Math.floor(Math.random() * ops.length)];
+      let op3 = ops[Math.floor(Math.random() * ops.length)];
+
+      let formatNum = (num) => num < 0 ? `(${num})` : `${num}`;
+      
+      let qStr = `${formatNum(n1)} ${op1} ${formatNum(n2)} ${op2} ${formatNum(n3)} ${op3} ${formatNum(n4)}`;
+      
+      let val1 = op1 === '+' ? (n1 + n2) : (n1 - n2);
+      let val2 = op2 === '+' ? (val1 + n3) : (val1 - n3);
+      let finalVal = op3 === '+' ? (val2 + n4) : (val2 - n4);
+
+      if (finalVal === targetValue) {
+        return qStr;
+      } else {
+        let diff = targetValue - finalVal;
+        let adjustedN4 = op3 === '+' ? (n4 + diff) : (n4 - diff);
+        
+        if (adjustedN4 >= -100 && adjustedN4 <= 100) {
+          qStr = `${formatNum(n1)} ${op1} ${formatNum(n2)} ${op2} ${formatNum(n3)} ${op3} ${formatNum(adjustedN4)}`;
+          return qStr;
+        } else {
+          return generateRandomMathProblem(targetValue);
+        }
+      }
+    }
+
+    function generateDynamicQuestions() {
+      let targets = [
+        getRandomInt(1, 10),
+        getRandomInt(1, 10),
+        getRandomInt(11, 30),
+        getRandomInt(11, 30)
+      ];
+
+      targets.sort(() => 0.5 - Math.random());
+
+      let questionsList = [];
+      targets.forEach(val => {
+        let q = generateRandomMathProblem(val);
+        questionsList.push({
+          question: q,
+          value: val
+        });
+      });
+
+      return questionsList;
+    }
+
+    skillBookBtn.addEventListener('click', (e) => {
+      if ((storyStage !== 5 && storyStage !== 8 && storyStage !== 12) || isAttacking) return;
+      e.stopPropagation();
+
+      if (playerHp >= maxPlayerHp) {
+        healActionCard.classList.add('disabled');
+      } else {
+        healActionCard.classList.remove('disabled');
+      }
+
+      modalOverlay.classList.add('active');
+    });
+
+    modalOverlay.addEventListener('click', (e) => {
+      if (e.target === modalOverlay) {
+        modalOverlay.classList.remove('active');
+      }
+    });
+
+    attackActionCard.addEventListener('click', (e) => {
+      e.stopPropagation();
+      currentActionType = 'attack';
+      modalOverlay.classList.remove('active');
+      openMathQuizModal('選擇的選項數值，將成為你的攻擊力');
+    });
+
+    defendActionCard.addEventListener('click', (e) => {
+      e.stopPropagation();
+      currentActionType = 'defend';
+      modalOverlay.classList.remove('active');
+      openMathQuizModal('選擇的選項數值，將成為你的護盾');
+    });
+
+    healActionCard.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (playerHp >= maxPlayerHp) return;
+      currentActionType = 'heal';
+      modalOverlay.classList.remove('active');
+      openMathQuizModal('選擇的選項數值，將回復你的血量');
+    });
+
+    function openMathQuizModal(instructionText) {
+      selectedValue = null;
+      mathInstructionText.textContent = instructionText;
+      mathConfirmBtn.style.display = 'none';
+      mathOptionsGrid.innerHTML = '';
+
+      let chosenQuestions = generateDynamicQuestions();
+
+      chosenQuestions.forEach((item) => {
+        const card = document.createElement('div');
+        card.className = 'math-option-card';
+        card.dataset.value = item.value;
+        card.dataset.fullText = `${item.question} = ${item.value}`;
+        card.textContent = item.question;
+
+        card.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const allCards = mathOptionsGrid.querySelectorAll('.math-option-card');
+          allCards.forEach(c => {
+            c.textContent = c.dataset.fullText;
+            c.style.pointerEvents = 'none';
+            c.style.borderColor = 'rgba(160, 110, 255, 0.4)';
+          });
+
+          card.style.borderColor = '#00f2fe';
+          card.style.background = 'rgba(40, 25, 80, 0.95)';
+
+          selectedValue = parseInt(card.dataset.value);
+          mathConfirmBtn.style.display = 'block';
+        });
+
+        mathOptionsGrid.appendChild(card);
+      });
+
+      mathModalOverlay.classList.add('active');
+    }
+
+    mathConfirmBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      mathModalOverlay.classList.remove('active');
+
+      if (currentActionType === 'attack') {
+        executePlayerAttack(selectedValue);
+      } else if (currentActionType === 'defend') {
+        currentShield = Math.min(maxPlayerHp, currentShield + selectedValue);
+        updateShieldDisplay();
+        processMonsterTurnAfterAction();
+      } else if (currentActionType === 'heal') {
+        playerHp = Math.min(maxPlayerHp, playerHp + selectedValue);
+        updatePlayerHpDisplay();
+
+        const healPopup = document.createElement('div');
+        healPopup.className = 'heal-popup';
+        healPopup.textContent = `+${selectedValue}`;
+        document.body.appendChild(healPopup);
+        setTimeout(() => healPopup.remove(), 1000);
+
+        processMonsterTurnAfterAction();
+      }
+    });
+
+    monsterUnits.forEach(unit => {
+      unit.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (storyStage !== 5 && storyStage !== 8 && storyStage !== 12) return;
+        const index = parseInt(unit.dataset.index);
+        const hp = parseInt(unit.dataset.hp);
+        if (hp <= 0) return;
+
+        monsterUnits.forEach(u => {
+          const reticle = u.querySelector('.target-reticle');
+          if (reticle) reticle.remove();
+        });
+
+        if (targetedMonsterIndex === index) {
+          targetedMonsterIndex = null;
+        } else {
+          targetedMonsterIndex = index;
+          const reticle = document.createElement('img');
+          reticle.src = '/static/image/target.png';
+          reticle.className = 'target-reticle';
+          unit.appendChild(reticle);
+        }
+      });
+    });
+
+    function executePlayerAttack(attackValue) {
+      isAttacking = true;
+      skillBookBtn.classList.add('disabled');
+
+      const slots = playerSlots.querySelectorAll('.player-slot');
+      let currentSlotIndex = 0;
+
+      function triggerNextSlotAttack() {
+        const currentActiveUnits = storyStage === 5 
+          ? Array.from(document.querySelectorAll('.stage-1-unit'))
+          : (storyStage === 8 ? Array.from(document.querySelectorAll('.stage-2-unit')) : Array.from(document.querySelectorAll('.stage-3-unit')));
+
+        const activeMonsters = currentActiveUnits.filter(u => parseInt(u.dataset.hp) > 0);
+
+        if (currentSlotIndex >= slots.length || activeMonsters.length === 0) {
+          monsterUnits.forEach(unit => {
+            if (parseInt(unit.dataset.hp) <= 0 && !unit.classList.contains('disintegrating')) {
+              unit.classList.add('disintegrating');
+              unit.style.pointerEvents = 'none';
+              const reticle = unit.querySelector('.target-reticle');
+              if (reticle) reticle.remove();
+            }
+          });
+
+          setTimeout(() => {
+            checkStageClear();
+          }, 800);
+          return;
+        }
+
+        const slot = slots[currentSlotIndex];
+        const slotRect = slot.getBoundingClientRect();
+
+        let targetUnit;
+        if (targetedMonsterIndex !== null) {
+          targetUnit = document.querySelector(`.monster-unit[data-index="${targetedMonsterIndex}"]`);
+          if (!targetUnit || parseInt(targetUnit.dataset.hp) <= 0) {
+            if (targetUnit) {
+              const reticle = targetUnit.querySelector('.target-reticle');
+              if (reticle) reticle.remove();
+            }
+            targetedMonsterIndex = null;
+            targetUnit = activeMonsters[Math.floor(Math.random() * activeMonsters.length)];
+          }
+        } else {
+          targetUnit = activeMonsters[Math.floor(Math.random() * activeMonsters.length)];
+        }
+
+        const targetImg = targetUnit.querySelector('.monster-img');
+        const targetRect = targetImg.getBoundingClientRect();
+
+        const projectile = document.createElement('div');
+        projectile.className = 'attack-projectile';
+        projectile.style.left = `${slotRect.left + slotRect.width / 2 - 8}px`;
+        projectile.style.top = `${slotRect.top + slotRect.height / 2 - 8}px`;
+        document.body.appendChild(projectile);
+
+        setTimeout(() => {
+          projectile.style.left = `${targetRect.left + targetRect.width / 2 - 8}px`;
+          projectile.style.top = `${targetRect.top + targetRect.height / 2 - 8}px`;
+        }, 20);
+
+        setTimeout(() => {
+          projectile.remove();
+
+          const damagePopup = document.createElement('div');
+          damagePopup.className = 'damage-popup';
+          damagePopup.textContent = `-${attackValue}`;
+          
+          const wrapper = targetUnit.querySelector('.monster-img-wrapper') || targetUnit.querySelector('.boss-img-wrapper');
+          wrapper.appendChild(damagePopup);
+          setTimeout(() => damagePopup.remove(), 800);
+
+          let currentHp = parseInt(targetUnit.dataset.hp);
+          currentHp = Math.max(0, currentHp - attackValue);
+          targetUnit.dataset.hp = currentHp;
+
+          const maxHp = targetUnit.dataset.index === "6" ? 1000 : 300;
+          const hpPercent = (currentHp / maxHp) * 100;
+          const monsterIndex = targetUnit.dataset.index;
+          document.getElementById(`monsterHp${monsterIndex}`).style.width = `${hpPercent}%`;
+
+          currentSlotIndex++;
+          setTimeout(triggerNextSlotAttack, 50);
+
+        }, 200);
+      }
+
+      triggerNextSlotAttack();
+    }
+
+    function checkStageClear() {
+      if (storyStage === 5) {
+        const stage1Alive = Array.from(document.querySelectorAll('.stage-1-unit')).some(u => parseInt(u.dataset.hp) > 0);
+        if (!stage1Alive) {
+          storyText.textContent = "偵測到更多生命體反應，不可掉以輕心！";
+          storyBanner.classList.add('active');
+          storyStage = 6; 
+          isAttacking = false;
+          return;
+        }
+      } else if (storyStage === 8) {
+        const stage2Alive = Array.from(document.querySelectorAll('.stage-2-unit')).some(u => parseInt(u.dataset.hp) > 0);
+        if (!stage2Alive) {
+          storyText.textContent = finalStageDialogues[0];
+          storyBanner.classList.add('active');
+          storyStage = 9; 
+          isAttacking = false;
+          return;
+        }
+      } else if (storyStage === 12) {
+        const stage3Alive = Array.from(document.querySelectorAll('.stage-3-unit')).some(u => parseInt(u.dataset.hp) > 0);
+        if (!stage3Alive) {
+          // 第三關勝利：顯示通關劇情橫幅，設定 storyStage 為 13 準備點擊返回地圖
+          storyText.textContent = "太驚人了！你成功擊敗了虛空魔菌，拯救了這個破碎世界！";
+          storyBanner.classList.add('active');
+          storyStage = 13;
+          isAttacking = false;
+          return;
+        }
+      }
+
+      processMonsterTurnAfterAction();
+    }
+
+    function processMonsterTurnAfterAction() {
+      const currentActiveUnits = storyStage === 5 
+        ? Array.from(document.querySelectorAll('.stage-1-unit'))
+        : (storyStage === 8 ? Array.from(document.querySelectorAll('.stage-2-unit')) : Array.from(document.querySelectorAll('.stage-3-unit')));
+
+      const activeMonsters = currentActiveUnits.filter(u => parseInt(u.dataset.hp) > 0);
+      if (activeMonsters.length === 0) {
+        isAttacking = false;
+        skillBookBtn.classList.remove('disabled');
+        return;
+      }
+
+      let attackingMonsters = [];
+
+      currentActiveUnits.forEach(unit => {
+        let hp = parseInt(unit.dataset.hp);
+        if (hp <= 0) return;
+
+        let cd = parseInt(unit.dataset.cd) - 1;
+        if (cd <= 0) {
+          cd = parseInt(unit.dataset.maxcd);
+          attackingMonsters.push(unit);
+        }
+
+        unit.dataset.cd = cd;
+        document.getElementById(`monsterCd${unit.dataset.index}`).textContent = `CD: ${cd}`;
+      });
+
+      if (attackingMonsters.length === 0) {
+        isAttacking = false;
+        skillBookBtn.classList.remove('disabled');
+        return;
+      }
+
+      let monsterIndex = 0;
+
+      function triggerNextMonsterAttack() {
+        if (monsterIndex >= attackingMonsters.length) {
+          isAttacking = false;
+          skillBookBtn.classList.remove('disabled');
+          return;
+        }
+
+        const unit = attackingMonsters[monsterIndex];
+        const monsterImg = unit.querySelector('.monster-img');
+        const monsterRect = monsterImg.getBoundingClientRect();
+        const playerSlotRect = playerSlots.getBoundingClientRect();
+        const monsterAtk = parseInt(unit.dataset.atk);
+
+        const bubble = document.createElement('div');
+        bubble.className = 'purple-bubble-projectile';
+        bubble.style.left = `${monsterRect.left + monsterRect.width / 2 - 13}px`;
+        bubble.style.top = `${monsterRect.top + monsterRect.height / 2 - 13}px`;
+        document.body.appendChild(bubble);
+
+        setTimeout(() => {
+          bubble.style.left = `${playerSlotRect.left + playerSlotRect.width / 2 - 13}px`;
+          bubble.style.top = `${playerSlotRect.top + playerSlotRect.height / 2 - 13}px`;
+        }, 30);
+
+        setTimeout(() => {
+          bubble.remove();
+
+          let incomingDamage = monsterAtk;
+          if (currentShield > 0) {
+            shieldImageLayer.classList.add('flash');
+            setTimeout(() => shieldImageLayer.classList.remove('flash'), 300);
+
+            if (currentShield >= incomingDamage) {
+              currentShield -= incomingDamage;
+              incomingDamage = 0;
+            } else {
+              incomingDamage -= currentShield;
+              currentShield = 0;
+            }
+            updateShieldDisplay();
+          }
+
+          playerHp = Math.max(0, playerHp - incomingDamage);
+          updatePlayerHpDisplay();
+
+          gameContainer.classList.add('screen-shake');
+          setTimeout(() => gameContainer.classList.remove('screen-shake'), 200);
+
+          monsterIndex++;
+          setTimeout(triggerNextMonsterAttack, 200);
+
+        }, 200);
+      }
+
+      triggerNextMonsterAttack();
+    }
+
+    function updatePlayerHpDisplay() {
+      const hpFill = document.getElementById('playerHpFill');
+      const hpText = document.getElementById('playerHpText');
+      const percent = (playerHp / maxPlayerHp) * 100;
+      hpFill.style.width = `${percent}%`;
+      hpText.textContent = `${playerHp} / ${maxPlayerHp}`;
+
+      // 當玩家血量歸零時改為顯示劇情橫幅提示，點擊後返回地圖
+      if (playerHp <= 0) {
+        setTimeout(() => {
+          storyText.textContent = "挑戰失敗！你的隊伍被異空間的真菌吞噬了... 點擊此處返回地圖。";
+          storyBanner.classList.add('active');
+          storyStage = 999; // 設定為失敗狀態代號
+          skillBookBtn.classList.add('disabled');
+        }, 300);
+      }
+    }
+
+    function updateShieldDisplay() {
+      if (currentShield > 0) {
+        shieldLabel.textContent = `[護盾: ${currentShield}]`;
+        shieldImageLayer.classList.remove('active');
+        shieldImageLayer.classList.add('active');
+      } else {
+        shieldLabel.textContent = '';
+        shieldImageLayer.classList.remove('active');
+      }
+    }
+  </script>
+
+</body>
+</html>
