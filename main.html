@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>國中數學 RPG - 罪世界異空間</title>
+  <title>數學 RPG</title>
   <link rel="stylesheet" href="/static/css/main.css">
 </head>
 <body>
@@ -20,9 +20,9 @@
     <!-- 怪物區 -->
     <div class="monsters-arena" id="monstersArena">
       
-      <!-- 第一關容器 -->
+      <!-- 第一關容器 (變異真菌血量改為 250) -->
       <div class="stage-1-container" id="stage1Container">
-        <div class="monster-unit stage-1-unit" data-index="0" data-hp="300" data-cd="4" data-maxcd="4" data-atk="15" id="monsterUnit0">
+        <div class="monster-unit stage-1-unit" data-index="0" data-hp="250" data-cd="4" data-maxcd="4" data-atk="15" id="monsterUnit0">
           <div class="monster-name">變異真菌</div>
           <div class="hp-bar-container">
             <div class="hp-bar-fill" id="monsterHp0" style="width: 100%;"></div>
@@ -33,7 +33,7 @@
           </div>
         </div>
 
-        <div class="monster-unit stage-1-unit" data-index="1" data-hp="300" data-cd="3" data-maxcd="3" data-atk="15" id="monsterUnit1">
+        <div class="monster-unit stage-1-unit" data-index="1" data-hp="250" data-cd="3" data-maxcd="3" data-atk="15" id="monsterUnit1">
           <div class="monster-name">變異真菌</div>
           <div class="hp-bar-container">
             <div class="hp-bar-fill" id="monsterHp1" style="width: 100%;"></div>
@@ -45,9 +45,9 @@
         </div>
       </div>
 
-      <!-- 第二關容器 -->
+      <!-- 第二關容器 (變異真菌血量改為 250) -->
       <div class="stage-2-container" id="stage2Container">
-        <div class="monster-unit stage-2-unit" data-index="2" data-hp="300" data-cd="3" data-maxcd="3" data-atk="15" id="monsterUnit2">
+        <div class="monster-unit stage-2-unit" data-index="2" data-hp="250" data-cd="3" data-maxcd="3" data-atk="15" id="monsterUnit2">
           <div class="monster-name">變異真菌</div>
           <div class="hp-bar-container">
             <div class="hp-bar-fill" id="monsterHp2" style="width: 100%;"></div>
@@ -58,7 +58,7 @@
           </div>
         </div>
 
-        <div class="monster-unit stage-2-unit" data-index="3" data-hp="300" data-cd="4" data-maxcd="4" data-atk="15" id="monsterUnit3">
+        <div class="monster-unit stage-2-unit" data-index="3" data-hp="250" data-cd="4" data-maxcd="4" data-atk="15" id="monsterUnit3">
           <div class="monster-name">變異真菌</div>
           <div class="hp-bar-container">
             <div class="hp-bar-fill" id="monsterHp3" style="width: 100%;"></div>
@@ -69,7 +69,7 @@
           </div>
         </div>
 
-        <div class="monster-unit stage-2-unit" data-index="4" data-hp="300" data-cd="3" data-maxcd="3" data-atk="15" id="monsterUnit4">
+        <div class="monster-unit stage-2-unit" data-index="4" data-hp="250" data-cd="3" data-maxcd="3" data-atk="15" id="monsterUnit4">
           <div class="monster-name">變異真菌</div>
           <div class="hp-bar-container">
             <div class="hp-bar-fill" id="monsterHp4" style="width: 100%;"></div>
@@ -81,9 +81,9 @@
         </div>
       </div>
 
-      <!-- 第三關容器 -->
+      <!-- 第三關容器 (變異真菌血量改為 250，虛空魔菌 CD 改為 3) -->
       <div class="stage-3-container" id="stage3Container">
-        <div class="monster-unit stage-3-unit" data-index="5" data-hp="300" data-cd="2" data-maxcd="2" data-atk="15" id="monsterUnit5">
+        <div class="monster-unit stage-3-unit" data-index="5" data-hp="250" data-cd="2" data-maxcd="2" data-atk="15" id="monsterUnit5">
           <div class="monster-name">變異真菌</div>
           <div class="hp-bar-container">
             <div class="hp-bar-fill" id="monsterHp5" style="width: 100%;"></div>
@@ -94,18 +94,18 @@
           </div>
         </div>
 
-        <div class="monster-unit stage-3-unit" data-index="6" data-hp="1000" data-cd="4" data-maxcd="4" data-atk="50" id="monsterUnit6">
+        <div class="monster-unit stage-3-unit" data-index="6" data-hp="1000" data-cd="3" data-maxcd="3" data-atk="50" id="monsterUnit6">
           <div class="monster-name" style="color: #ff33cc;">虛空魔菌</div>
           <div class="hp-bar-container">
             <div class="hp-bar-fill" id="monsterHp6" style="width: 100%; background: linear-gradient(90deg, #b5179e, #f72585);"></div>
           </div>
           <div class="boss-img-wrapper">
-            <div class="monster-cd" id="monsterCd6">CD: 4</div>
+            <div class="monster-cd" id="monsterCd6">CD: 3</div>
             <img src="/static/enemies/虛空魔菌.png" alt="虛空魔菌" class="monster-img boss-aura">
           </div>
         </div>
 
-        <div class="monster-unit stage-3-unit" data-index="7" data-hp="300" data-cd="2" data-maxcd="2" data-atk="15" id="monsterUnit7">
+        <div class="monster-unit stage-3-unit" data-index="7" data-hp="250" data-cd="2" data-maxcd="2" data-atk="15" id="monsterUnit7">
           <div class="monster-name">變異真菌</div>
           <div class="hp-bar-container">
             <div class="hp-bar-fill" id="monsterHp7" style="width: 100%;"></div>
@@ -239,7 +239,7 @@
     function handleStoryAdvance(e) {
       if (mathModalOverlay.classList.contains('active') || modalOverlay.classList.contains('active')) return;
 
-      // 遊戲失敗狀態下的點擊：返回地圖 (假設地圖頁面為 index.html)
+      // 遊戲失敗狀態下的點擊：返回地圖
       if (storyStage === 999) {
         window.location.href = 'index.html';
         return;
@@ -603,7 +603,8 @@
           currentHp = Math.max(0, currentHp - attackValue);
           targetUnit.dataset.hp = currentHp;
 
-          const maxHp = targetUnit.dataset.index === "6" ? 1000 : 300;
+          // 對應調整小怪與 Boss 的最大血量判定 (小怪血量改為 250)
+          const maxHp = targetUnit.dataset.index === "6" ? 1000 : 250;
           const hpPercent = (currentHp / maxHp) * 100;
           const monsterIndex = targetUnit.dataset.index;
           document.getElementById(`monsterHp${monsterIndex}`).style.width = `${hpPercent}%`;
@@ -639,7 +640,6 @@
       } else if (storyStage === 12) {
         const stage3Alive = Array.from(document.querySelectorAll('.stage-3-unit')).some(u => parseInt(u.dataset.hp) > 0);
         if (!stage3Alive) {
-          // 第三關勝利：顯示通關劇情橫幅，設定 storyStage 為 13 準備點擊返回地圖
           storyText.textContent = "太驚人了！你成功擊敗了虛空魔菌，拯救了這個破碎世界！";
           storyBanner.classList.add('active');
           storyStage = 13;
@@ -751,12 +751,11 @@
       hpFill.style.width = `${percent}%`;
       hpText.textContent = `${playerHp} / ${maxPlayerHp}`;
 
-      // 當玩家血量歸零時改為顯示劇情橫幅提示，點擊後返回地圖
       if (playerHp <= 0) {
         setTimeout(() => {
           storyText.textContent = "挑戰失敗！你的隊伍被異空間的真菌吞噬了... 點擊此處返回地圖。";
           storyBanner.classList.add('active');
-          storyStage = 999; // 設定為失敗狀態代號
+          storyStage = 999;
           skillBookBtn.classList.add('disabled');
         }, 300);
       }
