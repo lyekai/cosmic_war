@@ -1,0 +1,958 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body, html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* 背景嵌入層 */
+#bg-frame {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* 遊戲主介面容器 */
+.game-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 35px 20px;
+    z-index: 10;
+}
+
+/* ==========================================
+    1. 上方怪物區域
+    ========================================== */
+.monsters-arena {
+    display: flex;
+    gap: 120px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5vh;
+}
+
+.monster-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: monsterFloat 4s ease-in-out infinite alternate;
+}
+
+.monster-unit:nth-child(2) {
+    animation-delay: -2s;
+}
+
+@keyframes monsterFloat {
+    0% { transform: translateY(0px); }
+    100% { transform: translateY(-30px); }
+}
+
+.monster-name {
+    color: #e2d1ff;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    text-shadow: 0 0 10px rgba(130, 80, 255, 0.8);
+}
+
+.hp-bar-container {
+    width: 150px;
+    height: 14px;
+    background: rgba(10, 5, 25, 0.85);
+    border: 1.5px solid rgba(160, 110, 255, 0.6);
+    border-radius: 7px;
+    padding: 2px;
+    margin-bottom: 60px;
+    box-shadow: 0 0 12px rgba(100, 40, 200, 0.4), inset 0 0 4px rgba(0, 0, 0, 0.8);
+}
+.hp-bar-container-boss {
+    width: 500px;
+    height: 14px;
+    background: rgba(10, 5, 25, 0.85);
+    border: 1.5px solid rgba(160, 110, 255, 0.6);
+    border-radius: 7px;
+    padding: 2px;
+    margin-bottom: 60px;
+    box-shadow: 0 0 12px rgba(100, 40, 200, 0.4), inset 0 0 4px rgba(0, 0, 0, 0.8);
+}
+
+.hp-bar-fill {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, #ff3366, #ff6699);
+    border-radius: 4px;
+    box-shadow: 0 0 8px rgba(255, 50, 100, 0.8);
+    transition: width 0.3s ease;
+}
+
+.monster-img-wrapper {
+    position: relative;
+    width: 130px;
+    height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.monster-img-wrapper::after {
+    content: '';
+    position: absolute;
+    width: 110px;
+    height: 110px;
+    background: radial-gradient(circle, rgba(0, 180, 255, 0.65) 0%, rgba(0, 80, 220, 0.25) 50%, transparent 75%);
+    border-radius: 50%;
+    z-index: -1;
+    filter: blur(8px);
+    animation: eerieBluePulse 3s ease-in-out infinite alternate;
+}
+
+@keyframes eerieBluePulse {
+    0% { transform: scale(0.9); opacity: 0.75; filter: blur(6px); }
+    100% { transform: scale(1.2); opacity: 1; filter: blur(12px); }
+}
+
+.monster-img {
+    width: 300px;
+    height: 300px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 8px rgba(0, 160, 255, 0.6));
+}
+
+
+/* ==========================================
+    2. 下方玩家隊伍區域
+    ========================================== */
+.player-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.player-hp-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.player-hp-label {
+    color: #dcd0ff;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    margin-bottom: 5px;
+    text-shadow: 0 0 8px rgba(120, 80, 255, 0.8);
+}
+
+.player-hp-container {
+    position: relative;
+    width: 260px;
+    height: 18px;
+    background: rgba(12, 6, 30, 0.9);
+    border: 1.5px solid rgba(175, 130, 255, 0.7);
+    border-radius: 9px;
+    padding: 2.5px;
+    box-shadow: 0 0 16px rgba(120, 50, 255, 0.45), inset 0 0 6px rgba(0, 0, 0, 0.9);
+}
+
+.player-hp-fill {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, #00d2ff, #3a7bd5, #00f2fe);
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0, 210, 255, 0.8);
+    transition: width 0.3s ease;
+}
+
+.player-hp-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+}
+
+.player-slots {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    justify-content: center;
+}
+
+.player-slot {
+    width: 7vw;
+    height: auto;
+    aspect-ratio: 1/1;
+    background: rgba(25, 12, 50, 0.65);
+    border: 2px solid rgba(180, 140, 255, 0.5);
+    border-radius: 12px;
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(140, 90, 255, 0.2);
+    position: relative;
+    overflow: visible;
+}
+
+.player-slot img {
+    width: 70%;
+    height: auto;
+    object-fit: contain;
+    opacity: 0.85;
+    filter: drop-shadow(0 0 5px rgba(150, 150, 255, 0.4));
+}
+
+/* ==========================================
+    魔法書特效與 100x100 尺寸升級
+    ========================================== */
+.skill-book-container {
+    position: absolute;
+    bottom: 90px; /* 懸浮於隊員框正上方 */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 25;
+}
+
+/* 紫色魔法煙霧 / 暈光氣息特效 */
+.skill-book-container::before {
+    content: '';
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, rgba(180, 90, 255, 0.75) 0%, rgba(120, 40, 220, 0.35) 50%, transparent 75%);
+    border-radius: 50%;
+    z-index: -1;
+    filter: blur(10px);
+    animation: magicAuraPulse 2.5s ease-in-out infinite alternate;
+}
+
+@keyframes magicAuraPulse {
+    0% { transform: scale(0.85); opacity: 0.6; filter: blur(8px); }
+    100% { transform: scale(1.25); opacity: 1; filter: blur(14px); }
+}
+
+/* 向上散發的紫色魔法煙霧粒子元素 */
+.magic-smoke {
+    position: absolute;
+    bottom: 10px;
+    width: 8px;
+    height: 8px;
+    background: rgba(215, 170, 255, 0.9);
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(200, 130, 255, 1);
+    opacity: 0;
+    pointer-events: none;
+    animation: smokeRise 2s linear infinite;
+}
+
+.magic-smoke:nth-child(1) { left: 30%; animation-delay: 0s; }
+.magic-smoke:nth-child(2) { left: 50%; animation-delay: 0.7s; width: 6px; height: 6px; }
+.magic-smoke:nth-child(3) { left: 70%; animation-delay: 1.4s; width: 10px; height: 10px; }
+
+@keyframes smokeRise {
+    0% {
+    transform: translateY(0) scale(0.6);
+    opacity: 0.9;
+    }
+    50% {
+    opacity: 0.6;
+    }
+    100% {
+    transform: translateY(-55px) scale(1.6);
+    opacity: 0;
+    filter: blur(4px);
+    }
+}
+
+/* 放大至 100x100 的魔法書圖片 */
+.skill-book-btn {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 10px rgba(190, 130, 255, 0.9));
+    transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.skill-book-container:hover .skill-book-btn {
+    transform: scale(1.12) translateY(-4px);
+    filter: drop-shadow(0 0 18px rgba(230, 180, 255, 1));
+}
+
+
+/* ==========================================
+    3. 中央互動選單彈窗層 (無邊框、無叉叉)
+    ========================================== */
+#action-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(3, 0, 8, 0.75);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+}
+
+#action-modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* 無邊框選單面板容器 */
+.action-menu-panel {
+    position: relative;
+    background: transparent; /* 移除外框與背景底色 */
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    justify-content: center;
+    transform: scale(0.8);
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+#action-modal-overlay.active .action-menu-panel {
+    transform: scale(1);
+}
+
+/* 單個選項方塊 (1:1 正方形) */
+.action-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 110px;
+    height: 110px;
+    background: rgba(25, 12, 50, 0.85);
+    border: 2px solid rgba(180, 130, 255, 0.7);
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), inset 0 0 12px rgba(140, 90, 255, 0.3);
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.action-card:hover {
+    border-color: rgba(230, 200, 255, 1);
+    box-shadow: 0 0 22px rgba(190, 140, 255, 0.9), inset 0 0 15px rgba(180, 130, 255, 0.5);
+    transform: translateY(-5px);
+}
+
+.action-sticker {
+    font-size: 34px;
+    margin-bottom: 8px;
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.7));
+}
+
+.action-label {
+    color: #e2d1ff;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-shadow: 0 0 6px rgba(130, 80, 255, 0.9);
+}
+
+/* ==========================================
+    4. 遊戲畫面與技能互動樣式
+    ========================================== */
+#math-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 150;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+#math-modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.math-modal-panel {
+    position: relative;
+    background: rgba(15, 8, 35, 0.75);
+    backdrop-filter: blur(8px);
+    border: 2px solid rgba(180, 130, 255, 0.7);
+    border-radius: 20px;
+    padding: 30px 40px;
+    width: 520px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 0 30px rgba(100, 40, 200, 0.5), inset 0 0 15px rgba(140, 90, 255, 0.2);
+}
+
+.math-instruction {
+    color: #dcd0ff;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    text-shadow: 0 0 8px rgba(120, 80, 255, 0.8);
+    text-align: center;
+}
+
+.math-options-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.math-option-card {
+    background: rgba(30, 15, 65, 0.85);
+    border: 1.5px solid rgba(160, 110, 255, 0.6);
+    border-radius: 10px;
+    padding: 15px 20px;
+    color: #e2d1ff;
+    font-size: 15px;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.math-option-card:hover {
+    border-color: rgba(220, 190, 255, 1);
+    background: rgba(45, 22, 95, 0.9);
+    box-shadow: 0 0 15px rgba(180, 130, 255, 0.7);
+    transform: translateY(-2px);
+}
+
+.math-confirm-btn {
+    background: linear-gradient(135deg, #7b2cbf, #9d4edd);
+    border: 1.5px solid rgba(210, 160, 255, 0.8);
+    border-radius: 10px;
+    padding: 10px 30px;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(120, 50, 255, 0.5);
+    transition: all 0.2s ease;
+    display: none;
+}
+
+.math-confirm-btn:hover {
+    background: linear-gradient(135deg, #9d4edd, #c77dff);
+    box-shadow: 0 0 18px rgba(180, 100, 255, 0.8);
+    transform: translateY(-2px);
+}
+
+/* ==========================================
+    各關卡獨立怪物排版 CSS
+    ========================================== */
+.monsters-arena {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    min-height: 220px;
+}
+
+.stage-1-container {
+    display: flex;
+    gap: 120px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.stage-2-container {
+    display: none;
+    justify-content: space-around;
+    align-items: center;
+    width: 85%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.stage-3-container {
+    display: none;
+    justify-content: space-around;
+    align-items: center;
+    width: 85%;
+    max-width: 850px;
+    margin: 0 auto;
+}
+
+.boss-img-wrapper {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.boss-img-wrapper img {
+    width: 500px;
+    height: 500px;
+    object-fit: contain;
+}
+
+.monster-unit {
+    cursor: pointer;
+    position: relative;
+    opacity: 0;
+    transform: translateY(-30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.monster-unit.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.monster-img-wrapper {
+    position: relative;
+    width: 130px;
+    height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.boss-aura {
+    animation: evilAuraPulse 2s ease-in-out infinite alternate !important;
+    filter: drop-shadow(0 0 15px rgba(200, 0, 255, 0.8)) drop-shadow(0 0 30px rgba(100, 0, 150, 0.6));
+}
+
+@keyframes evilAuraPulse {
+    0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 10px rgba(180, 0, 255, 0.7)) drop-shadow(0 0 20px rgba(100, 0, 200, 0.5));
+    }
+    100% {
+    transform: scale(1.02);
+    filter: drop-shadow(0 0 25px rgba(255, 50, 220, 0.95)) drop-shadow(0 0 45px rgba(150, 0, 255, 0.8));
+    }
+}
+
+.monster-cd {
+    position: absolute;
+    top: -5px;
+    left: -10px;
+    color: #00ffff;
+    font-size: 15px;
+    font-weight: 700;
+    text-shadow: 0 0 6px rgba(0, 255, 255, 0.9);
+    z-index: 20;
+}
+
+.target-reticle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 75px;
+    height: 75px;
+    object-fit: contain;
+    pointer-events: none;
+    z-index: 30;
+    animation: reticleScaleOnly 1.2s ease-in-out infinite alternate;
+    filter: drop-shadow(0 0 8px rgba(255, 50, 80, 0.8));
+}
+
+@keyframes reticleScaleOnly {
+    0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.8; }
+    100% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+}
+
+.damage-popup {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #ff3366;
+    font-size: 24px;
+    font-weight: 900;
+    text-shadow: 0 0 8px rgba(255, 0, 0, 0.9);
+    pointer-events: none;
+    z-index: 50;
+    animation: damageFloat 0.8s ease-out forwards;
+}
+
+.heal-popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #33ff99;
+    font-size: 28px;
+    font-weight: 900;
+    text-shadow: 0 0 10px rgba(0, 255, 120, 0.9);
+    pointer-events: none;
+    z-index: 100;
+    animation: damageFloat 1s ease-out forwards;
+}
+
+@keyframes damageFloat {
+    0% { transform: translate(-50%, 0) scale(0.8); opacity: 1; }
+    100% { transform: translate(-50%, -50px) scale(1.2); opacity: 0; }
+}
+
+.attack-projectile {
+    position: fixed;
+    width: 16px;
+    height: 16px;
+    background: #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 0 15px #ffffff, 0 0 25px rgba(200, 200, 255, 0.9);
+    z-index: 200;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.purple-bubble-projectile {
+    position: fixed;
+    width: 26px;
+    height: 26px;
+    background: radial-gradient(circle at 30% 30%, #e0c3fc 0%, #8ec5fc 30%, #667eea 70%, #764ba2 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 15px rgba(180, 100, 255, 0.9), inset 0 0 8px rgba(255, 255, 255, 0.8);
+    z-index: 200;
+    pointer-events: none;
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+@keyframes screenShake {
+    0% { transform: translate(0, 0); }
+    20% { transform: translate(-4px, 3px); }
+    40% { transform: translate(4px, -3px); }
+    60% { transform: translate(-3px, -2px); }
+    80% { transform: translate(3px, 2px); }
+    100% { transform: translate(0, 0); }
+}
+
+.screen-shake {
+    animation: screenShake 0.4s ease-in-out;
+}
+
+#shield-image-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 90;
+    transition: opacity 0.3s ease;
+}
+
+#shield-image-layer.active {
+    opacity: 0.2;
+}
+
+#shield-image-layer.flash {
+    animation: shieldHitFlash 0.3s ease-in-out;
+}
+
+@keyframes shieldHitFlash {
+    0% { opacity: 0.2; transform: scale(1); }
+    50% { opacity: 0.3; filter: brightness(1.2); transform: scale(1.01); }
+    100% { opacity: 0.2; transform: scale(1); }
+}
+
+.monster-unit.disintegrating {
+    animation: disintegrateEffect 0.8s ease-out forwards;
+}
+
+@keyframes disintegrateEffect {
+    0% { transform: scale(1); filter: brightness(1) blur(0px); opacity: 1; }
+    50% { transform: scale(1.1) skewX(10deg); filter: brightness(2) blur(3px) drop-shadow(0 0 15px rgba(200, 150, 255, 0.9)); opacity: 0.6; }
+    100% { transform: scale(0.6) translateY(-30px); filter: brightness(3) blur(8px); opacity: 0; }
+}
+
+.skill-book-container.disabled {
+    pointer-events: none !important;
+    opacity: 0.5;
+    filter: grayscale(80%);
+}
+
+.action-card.disabled {
+    opacity: 0.4;
+    pointer-events: none;
+    filter: grayscale(100%);
+}
+
+/* ==========================================
+    5. 劇情橫幅與過場動畫樣式 (置於畫面正中央)
+    ========================================== */
+#story-banner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 750px;
+    max-width: 90vw;
+    height: 120px;
+    background: rgba(10, 5, 25, 0.85);
+    border: 1.5px solid rgba(160, 110, 255, 0.6);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 30px rgba(100, 40, 200, 0.6), inset 0 0 10px rgba(140, 90, 255, 0.25);
+    display: flex;
+    align-items: center;
+    padding: 0 25px;
+    z-index: 300;
+    cursor: pointer;
+    display: none;
+}
+
+#story-banner.active {
+    display: flex;
+}
+
+.story-role-img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    border-radius: 12px;
+    border: 1px solid rgba(180, 140, 255, 0.4);
+    background: rgba(20, 10, 40, 0.6);
+    margin-right: 20px;
+    flex-shrink: 0;
+    filter: drop-shadow(0 0 6px rgba(150, 100, 255, 0.6));
+}
+
+.story-text {
+    color: #eae3ff;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    line-height: 1.5;
+    text-shadow: 0 0 8px rgba(130, 80, 255, 0.8);
+    flex-grow: 1;
+}
+
+.story-next-hint {
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+    color: #00f2fe;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    animation: nextBlink 1s ease-in-out infinite alternate;
+    text-shadow: 0 0 6px rgba(0, 242, 254, 0.8);
+}
+
+@keyframes nextBlink {
+    0% { opacity: 0.3; }
+    100% { opacity: 1; }
+}
+
+#battle-intro-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 400;
+    pointer-events: none;
+    display: none;
+}
+
+.battle-intro-text {
+    color: #00f2fe;
+    font-size: 2.5em;
+    font-weight: 900;
+    letter-spacing: 6px;
+    border-right: 3px solid #00f2fe;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 0;
+    animation: typingEffect 1s steps(14, end) forwards, blinkCaret 0.5s step-end infinite;
+}
+
+@keyframes typingEffect {
+    from { width: 0; }
+    to { width: 360px; }
+}
+
+@keyframes blinkCaret {
+    from, to { border-color: transparent; }
+    50% { border-color: #00f2fe; }
+}
+
+@media screen and (max-width: 768px) {
+    .player-slots {
+        gap: 2vw;
+    }
+    .player-slot {
+        width: 18vw;
+    }
+    .player-section {
+        margin-bottom: 0;
+    }
+    .battle-intro-text {
+        font-size: 1.5em;
+    }
+
+    @keyframes typingEffect {
+        from { width: 0; }
+        to { width: 65%; }
+    }
+    .skill-book-container {
+        bottom: 10vh; /* 懸浮於隊員框正上方 */
+        width: 20vh;
+        height: auto;
+        aspect-ratio: 1/1;
+    }
+    .action-menu-panel {
+        gap: 30px;
+        flex-direction: column;
+    }
+    .math-modal-panel {
+        width: 90%;
+    }
+    .math-options-grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+    .stage-1-container {
+        gap: 0;
+    }
+    .monster-img {
+        width: 120px;
+        height: 120px;
+    }
+    .hp-bar-container {
+        width: 50%;
+        height: 14px;
+        margin-bottom: 10px;
+    }
+    .hp-bar-container-boss {
+        width: 100%;
+        height: 14px;
+        margin-bottom: 10px;
+    }
+    .monsters-arena {
+        width: 100%;
+        padding: 0 10px;
+    }
+
+    /* 2. 第一關 (兩隻怪物) 響應式 */
+    .stage-1-container {
+        width: 100%;
+        gap: 15px; /* 縮小原本 120px 的固定間距 */
+        justify-content: center;
+    }
+    .stage-1-container .monster-unit {
+        flex: 0 0 70%; /* 兩隻各佔 40% 寬度 */
+    }
+
+    /* 3. 第二關：三隻變異真菌 (各佔 30% 寬度，完全置中) */
+    .stage-2-container {
+        width: 100%;
+        max-width: 100%;
+        display: none; /* 由 JavaScript 控制 display: flex */
+        justify-content: center;
+        align-items: flex-end; /* 底部對齊 */
+        gap: 0; /* 用剩餘的 10% 均分間距：(100% - 30%*3) / 3 ≈ 3.33% */
+        transform: translateX(-5%);
+    }
+    .stage-2-container .monster-unit {
+        flex: 0 0 60%;
+        max-width: 60%;
+    }
+
+    /* 4. 第三關：25% / 45% / 25% (小怪 / BOSS / 小怪，完全置中) */
+    .stage-3-container {
+        width: 100%;
+        max-width: 100%;
+        display: none; /* 由 JavaScript 控制 display: flex */
+        justify-content: center;
+        align-items: flex-end; /* 底部對齊 */
+        gap: 2.5%; /* 用剩餘的 5% 均分間距：(100% - (25%+45%+25%)) / 2 = 2.5% */
+    }
+    .stage-3-unit {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    /* 5. 通用：重置怪物圖片容器與 Boss 尺寸，避免在手機上撐破外框 */
+    .monster-img-wrapper,
+    .boss-img-wrapper {
+        width: 100% !important;
+        height: auto !important;
+        aspect-ratio: 1 / 1; /* 保持正方形比例 */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .monster-img-wrapper img,
+    .boss-img-wrapper img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: contain;
+    }
+
+    /* 調整血條與名稱字體大小 */
+    .monster-name {
+        font-size: 12px;
+        white-space: nowrap;
+    }
+    .monster-cd {
+        font-size: 12px;
+        top: 15px;
+        left: 0;
+    }
+}
