@@ -3,140 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>數學 RPG - 關卡 1-2</title>
-  <link rel="stylesheet" href="/static/css/1-2.css">
-  <style>
-    /* ==========================================
-       Boss 虛空凝視者專屬：全新邪惡煙霧繚繞特效 (.boss-evil-smoke-aura)
-       ========================================== */
-    .boss-evil-smoke-aura {
-      animation: bossEvilFloat 3.5s ease-in-out infinite alternate !important;
-      filter: drop-shadow(0 0 20px rgba(160, 0, 255, 0.9)) drop-shadow(0 0 40px rgba(90, 0, 180, 0.7)) !important;
-    }
-
-    /* 結合背景邪惡紫色煙霧與動態光暈擴散 */
-    .boss-img-wrapper.boss-smoke-container {
-      position: relative;
-    }
-
-    .boss-img-wrapper.boss-smoke-container::before {
-      content: '';
-      position: absolute;
-      bottom: -15px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 130%;
-      height: 130%;
-      background: radial-gradient(circle, rgba(140, 0, 255, 0.65) 0%, rgba(80, 0, 160, 0.35) 45%, transparent 75%);
-      border-radius: 50%;
-      z-index: -1;
-      filter: blur(16px);
-      animation: bossEvilSmokeRise 2.8s ease-in-out infinite alternate;
-      pointer-events: none;
-    }
-
-    @keyframes bossEvilSmokeRise {
-      0% { transform: translateX(-50%) translateY(5px) scale(0.9); opacity: 0.6; filter: blur(12px); }
-      100% { transform: translateX(-50%) translateY(-20px) scale(1.3); opacity: 1; filter: blur(22px); }
-    }
-
-    @keyframes bossEvilFloat {
-      0% { transform: translateY(0px); }
-      100% { transform: translateY(-25px); }
-    }
-
-    /* 長按說明訊息框的彈窗遮罩樣式 */
-    #boss-info-modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(3, 0, 10, 0.8);
-      backdrop-filter: blur(5px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 500;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.25s ease;
-    }
-
-    #boss-info-modal.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .boss-info-panel {
-      background: rgba(20, 8, 45, 0.95);
-      border: 2px solid rgba(180, 50, 255, 0.8);
-      border-radius: 16px;
-      padding: 30px 40px;
-      width: 450px;
-      max-width: 85vw;
-      text-align: center;
-      box-shadow: 0 0 35px rgba(150, 0, 255, 0.6);
-    }
-
-    .boss-info-title {
-      color: #ff33cc;
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      margin-bottom: 15px;
-      text-shadow: 0 0 10px rgba(255, 50, 200, 0.8);
-    }
-
-    .boss-info-desc {
-      color: #eae3ff;
-      font-size: 15px;
-      line-height: 1.6;
-      letter-spacing: 1px;
-      margin-bottom: 25px;
-      text-shadow: 0 0 6px rgba(130, 80, 255, 0.8);
-    }
-
-    .boss-info-close-btn {
-      background: linear-gradient(135deg, #7b2cbf, #9d4edd);
-      border: 1px solid rgba(210, 160, 255, 0.8);
-      border-radius: 8px;
-      padding: 8px 25px;
-      color: #ffffff;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(120, 50, 255, 0.5);
-      transition: all 0.2s ease;
-    }
-
-    .boss-info-close-btn:hover {
-      background: linear-gradient(135deg, #9d4edd, #c77dff);
-      box-shadow: 0 0 15px rgba(180, 100, 255, 0.8);
-    }
-
-    /* 封印提示特效文字 */
-    .sealed-popup {
-      position: fixed;
-      top: 40%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: #ff3344;
-      font-size: 26px;
-      font-weight: 900;
-      text-shadow: 0 0 12px rgba(255, 0, 0, 0.9);
-      pointer-events: none;
-      z-index: 250;
-      animation: sealedFloat 1.2s ease-out forwards;
-    }
-
-    @keyframes sealedFloat {
-      0% { transform: translate(-50%, 0) scale(0.8); opacity: 1; }
-      100% { transform: translate(-50%, -60px) scale(1.1); opacity: 0; }
-    }
-  </style>
+  <title>數學 RPG</title>
+  <link rel="stylesheet" href="/static/css/main.css">
 </head>
 <body>
+
   <!-- 全螢幕護盾圖片層 -->
   <img id="shield-image-layer" src="/static/image/shield.png" alt="護盾特效">
 
@@ -149,56 +20,99 @@
     <!-- 怪物區 -->
     <div class="monsters-arena" id="monstersArena">
       
-      <!-- 第一關容器：單隻虛空魔菌 (生命 1000, CD 3, 攻擊 50) -->
+      <!-- 第一關容器 (變異真菌血量改為 250) -->
       <div class="stage-1-container" id="stage1Container">
-        <div class="monster-unit stage-1-unit" data-index="0" data-hp="1000" data-cd="3" data-maxcd="3" data-atk="50" id="monsterUnit0">
-          <div class="monster-name" style="color: #ff33cc;">虛空魔菌</div>
+        <div class="monster-unit stage-1-unit" data-index="0" data-hp="250" data-cd="4" data-maxcd="4" data-atk="15" id="monsterUnit0">
+          <div class="monster-name">變異真菌</div>
           <div class="hp-bar-container">
-            <div class="hp-bar-fill" id="monsterHp0" style="width: 100%; background: linear-gradient(90deg, #b5179e, #f72585);"></div>
+            <div class="hp-bar-fill" id="monsterHp0" style="width: 100%;"></div>
           </div>
           <div class="monster-img-wrapper">
-            <div class="monster-cd" id="monsterCd0">CD: 3</div>
+            <div class="monster-cd" id="monsterCd0">CD: 4</div>
+            <img src="/static/enemies/變異真菌.png" alt="變異真菌" class="monster-img">
+          </div>
+        </div>
+
+        <div class="monster-unit stage-1-unit" data-index="1" data-hp="250" data-cd="3" data-maxcd="3" data-atk="15" id="monsterUnit1">
+          <div class="monster-name">變異真菌</div>
+          <div class="hp-bar-container">
+            <div class="hp-bar-fill" id="monsterHp1" style="width: 100%;"></div>
+          </div>
+          <div class="monster-img-wrapper">
+            <div class="monster-cd" id="monsterCd1">CD: 3</div>
+            <img src="/static/enemies/變異真菌.png" alt="變異真菌" class="monster-img">
+          </div>
+        </div>
+      </div>
+
+      <!-- 第二關容器 (變異真菌血量改為 250) -->
+      <div class="stage-2-container" id="stage2Container">
+        <div class="monster-unit stage-2-unit" data-index="2" data-hp="250" data-cd="3" data-maxcd="3" data-atk="15" id="monsterUnit2">
+          <div class="monster-name">變異真菌</div>
+          <div class="hp-bar-container">
+            <div class="hp-bar-fill" id="monsterHp2" style="width: 100%;"></div>
+          </div>
+          <div class="monster-img-wrapper">
+            <div class="monster-cd" id="monsterCd2">CD: 3</div>
+            <img src="/static/enemies/變異真菌.png" alt="變異真菌" class="monster-img">
+          </div>
+        </div>
+
+        <div class="monster-unit stage-2-unit" data-index="3" data-hp="250" data-cd="4" data-maxcd="4" data-atk="15" id="monsterUnit3">
+          <div class="monster-name">變異真菌</div>
+          <div class="hp-bar-container">
+            <div class="hp-bar-fill" id="monsterHp3" style="width: 100%;"></div>
+          </div>
+          <div class="monster-img-wrapper">
+            <div class="monster-cd" id="monsterCd3">CD: 4</div>
+            <img src="/static/enemies/變異真菌.png" alt="變異真菌" class="monster-img">
+          </div>
+        </div>
+
+        <div class="monster-unit stage-2-unit" data-index="4" data-hp="250" data-cd="3" data-maxcd="3" data-atk="15" id="monsterUnit4">
+          <div class="monster-name">變異真菌</div>
+          <div class="hp-bar-container">
+            <div class="hp-bar-fill" id="monsterHp4" style="width: 100%;"></div>
+          </div>
+          <div class="monster-img-wrapper">
+            <div class="monster-cd" id="monsterCd4">CD: 3</div>
+            <img src="/static/enemies/變異真菌.png" alt="變異真菌" class="monster-img">
+          </div>
+        </div>
+      </div>
+
+      <!-- 第三關容器 (變異真菌血量改為 250，虛空魔菌 CD 改為 3) -->
+      <div class="stage-3-container" id="stage3Container">
+        <div class="monster-unit stage-3-unit" data-index="5" data-hp="250" data-cd="2" data-maxcd="2" data-atk="15" id="monsterUnit5">
+          <div class="monster-name">變異真菌</div>
+          <div class="hp-bar-container">
+            <div class="hp-bar-fill" id="monsterHp5" style="width: 100%;"></div>
+          </div>
+          <div class="monster-img-wrapper">
+            <div class="monster-cd" id="monsterCd5">CD: 2</div>
+            <img src="/static/enemies/變異真菌.png" alt="變異真菌" class="monster-img">
+          </div>
+        </div>
+
+        <div class="monster-unit stage-3-unit" data-index="6" data-hp="1000" data-cd="3" data-maxcd="3" data-atk="50" id="monsterUnit6">
+          <div class="monster-name" style="color: #ff33cc;">虛空魔菌</div>
+          <div class="hp-bar-container">
+            <div class="hp-bar-fill" id="monsterHp6" style="width: 100%; background: linear-gradient(90deg, #b5179e, #f72585);"></div>
+          </div>
+          <div class="boss-img-wrapper">
+            <div class="monster-cd" id="monsterCd6">CD: 3</div>
             <img src="/static/enemies/虛空魔菌.png" alt="虛空魔菌" class="monster-img boss-aura">
           </div>
         </div>
-      </div>
 
-      <!-- 第二關容器：兩隻虛空魔菌 (左: CD 4, 血 1000, 攻 50 / 右: CD 3, 血 1000, 攻 50) -->
-      <div class="stage-2-container" id="stage2Container" style="display: none; justify-content: space-around;">
-        <div class="monster-unit stage-2-unit" data-index="1" data-hp="1000" data-cd="4" data-maxcd="4" data-atk="50" id="monsterUnit1">
-          <div class="monster-name" style="color: #ff33cc;">虛空魔菌</div>
+        <div class="monster-unit stage-3-unit" data-index="7" data-hp="250" data-cd="2" data-maxcd="2" data-atk="15" id="monsterUnit7">
+          <div class="monster-name">變異真菌</div>
           <div class="hp-bar-container">
-            <div class="hp-bar-fill" id="monsterHp1" style="width: 100%; background: linear-gradient(90deg, #b5179e, #f72585);"></div>
+            <div class="hp-bar-fill" id="monsterHp7" style="width: 100%;"></div>
           </div>
-          <div class="boss-img-wrapper" style="width: 220px; height: 220px;">
-            <div class="monster-cd" id="monsterCd1">CD: 4</div>
-            <img src="/static/enemies/虛空魔菌.png" alt="虛空魔菌" class="monster-img boss-aura" style="width: 350px; height: 350px;">
-          </div>
-        </div>
-
-        <div class="monster-unit stage-2-unit" data-index="2" data-hp="1000" data-cd="3" data-maxcd="3" data-atk="50" id="monsterUnit2">
-          <div class="monster-name" style="color: #ff33cc;">虛空魔菌</div>
-          <div class="hp-bar-container">
-            <div class="hp-bar-fill" id="monsterHp2" style="width: 100%; background: linear-gradient(90deg, #b5179e, #f72585);"></div>
-          </div>
-          <div class="boss-img-wrapper" style="width: 220px; height: 220px;">
-            <div class="monster-cd" id="monsterCd2">CD: 3</div>
-            <img src="/static/enemies/虛空魔菌.png" alt="虛空魔菌" class="monster-img boss-aura" style="width: 350px; height: 350px;">
-          </div>
-        </div>
-      </div>
-
-      <!-- 第三關容器：虛空凝視者 (生命 3000, CD 4, 攻擊 80) -->
-      <div class="stage-3-container" id="stage3Container" style="display: none; justify-content: center;">
-        <div class="monster-unit stage-3-unit" data-index="3" data-hp="3000" data-cd="4" data-maxcd="4" data-atk="80" id="monsterUnit3">
-          <div class="monster-name" style="color: #00ffff; font-size: 18px;">虛空凝視者</div>
-          <div class="hp-bar-container">
-            <div class="hp-bar-fill" id="monsterHp3" style="width: 100%; background: linear-gradient(90deg, #00f2fe, #4facfe);"></div>
-          </div>
-          <!-- 這裡替換成專屬的 boss-smoke-container 類別，並將原本的 boss-aura 換成 boss-evil-smoke-aura -->
-          <div class="boss-img-wrapper boss-smoke-container" id="bossImgWrapper" style="width: 320px; height: 320px;">
-            <div class="monster-cd" id="monsterCd3">CD: 4</div>
-            <img src="/static/enemies/虛空凝視者.png" alt="虛空凝視者" class="monster-img boss-evil-smoke-aura" style="width: 550px; height: 550px;">
+          <div class="monster-img-wrapper">
+            <div class="monster-cd" id="monsterCd7">CD: 2</div>
+            <img src="/static/enemies/變異真菌.png" alt="變異真菌" class="monster-img">
           </div>
         </div>
       </div>
@@ -211,7 +125,7 @@
         <div class="player-hp-label">PLAYER TEAM HP <span id="shieldLabel" style="color:#00ffff; font-size:11px; margin-left:8px;"></span></div>
         <div class="player-hp-container">
           <div class="player-hp-fill" id="playerHpFill" style="width: 100%;"></div>
-          <div class="player-hp-text" id="playerHpText">250 / 250</div>
+          <div class="player-hp-text" id="playerHpText">100 / 100</div>
         </div>
       </div>
 
@@ -233,15 +147,6 @@
       </div>
     </div>
 
-  </div>
-
-  <!-- Boss 資訊說明彈窗層 (長按觸發) -->
-  <div id="boss-info-modal">
-    <div class="boss-info-panel">
-      <div class="boss-info-title">虛空凝視者</div>
-      <div class="boss-info-desc">擁有邪惡魔眼的怪物，會封印玩家所有數值≤10的行動</div>
-      <button class="boss-info-close-btn" id="bossInfoCloseBtn">知道了</button>
-    </div>
   </div>
 
   <!-- 行動選單彈窗層 -->
@@ -274,7 +179,7 @@
   <!-- 劇情橫幅對話框 -->
   <div id="story-banner">
     <img src="/static/image/role.png" alt="角色" class="story-role-img">
-    <div class="story-text" id="storyText">想不到虛空魔菌的生命力這麼頑強...</div>
+    <div class="story-text" id="storyText">沒想到竟然就穿越到了這裡...</div>
     <div class="story-next-hint">NEXT ▶</div>
   </div>
 
@@ -305,35 +210,25 @@
     const battleIntroOverlay = document.getElementById('battle-intro-overlay');
     const battleIntroText = document.getElementById('battleIntroText');
 
-    // Boss 長按彈窗相關變數
-    const bossImgWrapper = document.getElementById('bossImgWrapper');
-    const bossInfoModal = document.getElementById('boss-info-modal');
-    const bossInfoCloseBtn = document.getElementById('bossInfoCloseBtn');
-    let pressTimer = null;
-
     let selectedValue = null;
     let targetedMonsterIndex = null;
     let isAttacking = false;
     let currentActionType = 'attack';
 
-    let playerHp = 250;
-    const maxPlayerHp = 250;
+    let playerHp = 100;
+    const maxPlayerHp = 100;
     let currentShield = 0;
 
     let storyStage = 0;
     const storyDialogues = [
-      "想不到虛空魔菌的生命力這麼頑強...",
-      "這次一定要確實消滅他！"
-    ];
-
-    const stage2Dialogues = [
-      "難道說...他還有同夥？"
+      "沒想到竟然就穿越到了這裡...",
+      "這個破碎的世界...",
+      "有東西在靠近！要上囉，挑戰者"
     ];
 
     const finalStageDialogues = [
-      "相傳蘑菇星住著一頭獨眼怪物，沒有相關記載",
-      "至今遇見他的人無一倖免於難",
-      "由你來消滅他，拜託了！挑戰者"
+      "感受到了一股不祥的氣息...要來了...",
+      "是操控這些真菌的怪物...阻止他！挑戰者"
     ];
 
     function initStory() {
@@ -341,77 +236,41 @@
     }
     window.addEventListener('DOMContentLoaded', initStory);
 
-    // ==========================================
-    // Boss 長按顯示/隱藏機制
-    // ==========================================
-    function startBossPressTimer(e) {
-      if (storyStage !== 15) return; // 僅在第三關 Boss 階段生效
-      pressTimer = setTimeout(() => {
-        bossInfoModal.classList.add('active');
-      }, 600); // 長按 0.6 秒觸發
-    }
-
-    function clearBossPressTimer() {
-      if (pressTimer) {
-        clearTimeout(pressTimer);
-        pressTimer = null;
-      }
-    }
-
-    if (bossImgWrapper) {
-      bossImgWrapper.addEventListener('mousedown', startBossPressTimer);
-      bossImgWrapper.addEventListener('mouseup', clearBossPressTimer);
-      bossImgWrapper.addEventListener('mouseleave', clearBossPressTimer);
-
-      bossImgWrapper.addEventListener('touchstart', startBossPressTimer);
-      bossImgWrapper.addEventListener('touchend', clearBossPressTimer);
-    }
-
-    bossInfoCloseBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      bossInfoModal.classList.remove('active');
-    });
-
-    bossInfoModal.addEventListener('click', (e) => {
-      if (e.target === bossInfoModal) {
-        bossInfoModal.classList.remove('active');
-      }
-    });
-
     function handleStoryAdvance(e) {
-      if (mathModalOverlay.classList.contains('active') || modalOverlay.classList.contains('active') || bossInfoModal.classList.contains('active')) return;
+      // 【優化】若過場動畫正在播放、或彈窗開啟中，直接忽略點擊，防止狂點導致畫面錯亂
+      if (battleIntroOverlay.style.display === 'flex' || mathModalOverlay.classList.contains('active') || modalOverlay.classList.contains('active')) return;
 
+      // 遊戲失敗狀態下的點擊：返回地圖
       if (storyStage === 999) {
         window.location.href = 'index.html';
         return;
       }
 
-      if (storyStage === 20) {
+      // 遊戲通關狀態下的點擊：返回地圖
+      if (storyStage === 13) {
         window.location.href = 'index.html';
         return;
       }
 
-      if (storyStage === 0) {
+      if (storyStage === 0 || storyStage === 1 || storyStage === 2) {
         storyStage++;
-        storyText.textContent = storyDialogues[storyStage];
-      } else if (storyStage === 1) {
-        storyBanner.classList.remove('active');
-        playBattleIntroAnimation("BATTLE 01/03", 1);
-      } else if (storyStage === 2) {
+        if (storyStage < 3) {
+          storyText.textContent = storyDialogues[storyStage];
+        } else {
+          storyBanner.classList.remove('active');
+          playBattleIntroAnimation("BATTLE 01/03", 1);
+        }
+      } else if (storyStage === 4) {
         storyBanner.classList.remove('active');
         skillBookBtn.classList.remove('disabled');
-        storyStage = 3; 
-      } else if (storyStage === 5) {
+        storyStage = 5; 
+      } else if (storyStage === 6) {
         storyBanner.classList.remove('active');
         playBattleIntroAnimation("BATTLE 02/03", 2);
-      } else if (storyStage === 7) {
-        storyBanner.classList.remove('active');
-        skillBookBtn.classList.remove('disabled');
-        storyStage = 8;
-      } else if (storyStage >= 10 && storyStage <= 11) {
-        storyStage++;
-        storyText.textContent = finalStageDialogues[storyStage - 10];
-      } else if (storyStage === 12) {
+      } else if (storyStage === 9) {
+        storyText.textContent = finalStageDialogues[1];
+        storyStage = 10;
+      } else if (storyStage === 10) {
         storyBanner.classList.remove('active');
         playBattleIntroAnimation("BATTLE 03/03", 3);
       }
@@ -434,58 +293,70 @@
 
         if (stageNum === 1) {
           document.getElementById('monsterUnit0').classList.add('visible');
+          setTimeout(() => {
+            document.getElementById('monsterUnit1').classList.add('visible');
+          }, 400);
 
           setTimeout(() => {
             storyText.textContent = "點擊右下角的魔法書，它將賦予你力量！";
             storyBanner.classList.add('active');
-            storyStage = 2;
+            storyStage = 4;
           }, 1000);
         } else if (stageNum === 2) {
           document.getElementById('stage1Container').style.display = 'none';
           document.getElementById('stage2Container').style.display = 'flex';
 
           setTimeout(() => {
-            document.getElementById('monsterUnit1').classList.add('visible');
             document.getElementById('monsterUnit2').classList.add('visible');
-            skillBookBtn.classList.remove('disabled');
-            storyStage = 8;
-          }, 400);
+            setTimeout(() => {
+              document.getElementById('monsterUnit3').classList.add('visible');
+              setTimeout(() => {
+                document.getElementById('monsterUnit4').classList.add('visible');
+                skillBookBtn.classList.remove('disabled');
+                storyStage = 8;
+              }, 400);
+            }, 400);
+          }, 100);
         } else if (stageNum === 3) {
           document.getElementById('stage2Container').style.display = 'none';
           document.getElementById('stage3Container').style.display = 'flex';
 
           setTimeout(() => {
-            document.getElementById('monsterUnit3').classList.add('visible');
-            skillBookBtn.classList.remove('disabled');
-            storyStage = 15;
-          }, 400);
+            document.getElementById('monsterUnit5').classList.add('visible');
+            setTimeout(() => {
+              document.getElementById('monsterUnit6').classList.add('visible');
+              setTimeout(() => {
+                document.getElementById('monsterUnit7').classList.add('visible');
+                skillBookBtn.classList.remove('disabled');
+                storyStage = 12;
+              }, 400);
+            }, 400);
+          }, 100);
         }
 
       }, 2000);
     }
 
     // ==========================================
-    // 自動隨機生成數學題目的核心函式 (加、減、乘，無除法)
+    // 自動隨機生成數學題目的核心函式 (範圍已改為 -30 ~ 30)
     // ==========================================
     function getRandomInt(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    function formatNum(num) {
-      return num < 0 ? `(${num})` : `${num}`;
-    }
-
-    function generateAdditionSubtractionProblem(targetValue) {
-      let n1 = getRandomInt(-20, 20);
-      let n2 = getRandomInt(-20, 20);
-      let n3 = getRandomInt(-20, 20);
-      let n4 = getRandomInt(-20, 20);
+    function generateRandomMathProblem(targetValue) {
+      let n1 = getRandomInt(-30, 30);
+      let n2 = getRandomInt(-30, 30);
+      let n3 = getRandomInt(-30, 30);
+      let n4 = getRandomInt(-30, 30);
 
       let ops = ['+', '-'];
       let op1 = ops[Math.floor(Math.random() * ops.length)];
       let op2 = ops[Math.floor(Math.random() * ops.length)];
       let op3 = ops[Math.floor(Math.random() * ops.length)];
 
+      let formatNum = (num) => num < 0 ? `(${num})` : `${num}`;
+      
       let qStr = `${formatNum(n1)} ${op1} ${formatNum(n2)} ${op2} ${formatNum(n3)} ${op3} ${formatNum(n4)}`;
       
       let val1 = op1 === '+' ? (n1 + n2) : (n1 - n2);
@@ -498,78 +369,28 @@
         let diff = targetValue - finalVal;
         let adjustedN4 = op3 === '+' ? (n4 + diff) : (n4 - diff);
         
-        if (adjustedN4 >= -20 && adjustedN4 <= 20) {
-          return `${formatNum(n1)} ${op1} ${formatNum(n2)} ${op2} ${formatNum(n3)} ${op3} ${formatNum(adjustedN4)}`;
+        if (adjustedN4 >= -30 && adjustedN4 <= 30) {
+          qStr = `${formatNum(n1)} ${op1} ${formatNum(n2)} ${op2} ${formatNum(n3)} ${op3} ${formatNum(adjustedN4)}`;
+          return qStr;
         } else {
-          return generateAdditionSubtractionProblem(targetValue);
+          return generateRandomMathProblem(targetValue);
         }
       }
-    }
-
-    function generateMixedArithmeticProblem(targetValue) {
-      let allOps = ['+', '-', '*'];
-      
-      for (let attempt = 0; attempt < 500; attempt++) {
-        let nums = [
-          getRandomInt(-20, 20),
-          getRandomInt(-20, 20),
-          getRandomInt(-20, 20),
-          getRandomInt(-20, 20)
-        ];
-
-        let ops = [
-          allOps[Math.floor(Math.random() * allOps.length)],
-          allOps[Math.floor(Math.random() * allOps.length)],
-          allOps[Math.floor(Math.random() * allOps.length)]
-        ];
-
-        let values = [...nums];
-        let operators = [...ops];
-
-        for (let i = 0; i < operators.length; ) {
-          if (operators[i] === '*') {
-            let res = values[i] * values[i + 1];
-            values.splice(i, 2, res);
-            operators.splice(i, 1);
-          } else {
-            i++;
-          }
-        }
-
-        while (operators.length > 0) {
-          let res = operators[0] === '+' ? (values[0] + values[1]) : (values[0] - values[1]);
-          values.splice(0, 2, res);
-          operators.splice(0, 1);
-        }
-
-        if (values[0] === targetValue) {
-          let displayOps = ops.map(op => op === '*' ? '×' : op);
-          return `${formatNum(nums[0])} ${displayOps[0]} ${formatNum(nums[1])} ${displayOps[1]} ${formatNum(nums[2])} ${displayOps[2]} ${formatNum(nums[3])}`;
-        }
-      }
-
-      return generateAdditionSubtractionProblem(targetValue);
-    }
-
-    function generateMathProblem(targetValue) {
-      return Math.random() < 0.5 
-        ? generateMixedArithmeticProblem(targetValue)
-        : generateAdditionSubtractionProblem(targetValue);
     }
 
     function generateDynamicQuestions() {
       let targets = [
         getRandomInt(1, 10),
         getRandomInt(1, 10),
-        getRandomInt(20, 40),
-        getRandomInt(20, 40)
+        getRandomInt(11, 30),
+        getRandomInt(11, 30)
       ];
 
       targets.sort(() => 0.5 - Math.random());
 
       let questionsList = [];
       targets.forEach(val => {
-        let q = generateMathProblem(val);
+        let q = generateRandomMathProblem(val);
         questionsList.push({
           question: q,
           value: val
@@ -580,8 +401,9 @@
     }
 
     skillBookBtn.addEventListener('click', (e) => {
-      if ((storyStage !== 3 && storyStage !== 8 && storyStage !== 15) || isAttacking) return;
-      e.stopPropagation();
+      e.stopPropagation(); // 【優化】阻止點擊事件穿透到底部全域畫面
+      // 【優化】若魔法書處於 disabled 狀態（尚未解鎖），直接阻擋，不允許任何互動
+      if (skillBookBtn.classList.contains('disabled') || isAttacking) return;
 
       if (playerHp >= maxPlayerHp) {
         healActionCard.classList.add('disabled');
@@ -657,23 +479,9 @@
       mathModalOverlay.classList.add('active');
     }
 
-    // ==========================================
-    // 確認按鈕與 Boss 封印能力判定 (數值 <= 10 封印)
-    // ==========================================
     mathConfirmBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       mathModalOverlay.classList.remove('active');
-
-      if (storyStage === 15 && selectedValue <= 10) {
-        const sealedPopup = document.createElement('div');
-        sealedPopup.className = 'sealed-popup';
-        sealedPopup.textContent = '⚠️ 數值 ≤ 10，遭到虛空凝視者封印！';
-        document.body.appendChild(sealedPopup);
-        setTimeout(() => sealedPopup.remove(), 1200);
-
-        processMonsterTurnAfterAction();
-        return;
-      }
 
       if (currentActionType === 'attack') {
         executePlayerAttack(selectedValue);
@@ -695,16 +503,15 @@
       }
     });
 
-    const monsterUnitsArr = document.querySelectorAll('.monster-unit');
-    monsterUnitsArr.forEach(unit => {
+    monsterUnits.forEach(unit => {
       unit.addEventListener('click', (e) => {
         e.stopPropagation();
-        if (storyStage !== 3 && storyStage !== 8 && storyStage !== 15) return;
+        if (storyStage !== 5 && storyStage !== 8 && storyStage !== 12) return;
         const index = parseInt(unit.dataset.index);
         const hp = parseInt(unit.dataset.hp);
         if (hp <= 0) return;
 
-        monsterUnitsArr.forEach(u => {
+        monsterUnits.forEach(u => {
           const reticle = u.querySelector('.target-reticle');
           if (reticle) reticle.remove();
         });
@@ -729,14 +536,14 @@
       let currentSlotIndex = 0;
 
       function triggerNextSlotAttack() {
-        const currentActiveUnits = storyStage === 3 
+        const currentActiveUnits = storyStage === 5 
           ? Array.from(document.querySelectorAll('.stage-1-unit'))
           : (storyStage === 8 ? Array.from(document.querySelectorAll('.stage-2-unit')) : Array.from(document.querySelectorAll('.stage-3-unit')));
 
         const activeMonsters = currentActiveUnits.filter(u => parseInt(u.dataset.hp) > 0);
 
         if (currentSlotIndex >= slots.length || activeMonsters.length === 0) {
-          document.querySelectorAll('.monster-unit').forEach(unit => {
+          monsterUnits.forEach(unit => {
             if (parseInt(unit.dataset.hp) <= 0 && !unit.classList.contains('disintegrating')) {
               unit.classList.add('disintegrating');
               unit.style.pointerEvents = 'none';
@@ -798,9 +605,7 @@
           currentHp = Math.max(0, currentHp - attackValue);
           targetUnit.dataset.hp = currentHp;
 
-          let maxHp = 1000;
-          if (targetUnit.dataset.index === "3") maxHp = 3000;
-
+          const maxHp = targetUnit.dataset.index === "6" ? 1000 : 250;
           const hpPercent = (currentHp / maxHp) * 100;
           const monsterIndex = targetUnit.dataset.index;
           document.getElementById(`monsterHp${monsterIndex}`).style.width = `${hpPercent}%`;
@@ -815,12 +620,12 @@
     }
 
     function checkStageClear() {
-      if (storyStage === 3) {
+      if (storyStage === 5) {
         const stage1Alive = Array.from(document.querySelectorAll('.stage-1-unit')).some(u => parseInt(u.dataset.hp) > 0);
         if (!stage1Alive) {
-          storyText.textContent = stage2Dialogues[0];
+          storyText.textContent = "偵測到更多生命體反應，不可掉以輕心！";
           storyBanner.classList.add('active');
-          storyStage = 5; 
+          storyStage = 6; 
           isAttacking = false;
           return;
         }
@@ -829,16 +634,16 @@
         if (!stage2Alive) {
           storyText.textContent = finalStageDialogues[0];
           storyBanner.classList.add('active');
-          storyStage = 10; 
+          storyStage = 9; 
           isAttacking = false;
           return;
         }
-      } else if (storyStage === 15) {
+      } else if (storyStage === 12) {
         const stage3Alive = Array.from(document.querySelectorAll('.stage-3-unit')).some(u => parseInt(u.dataset.hp) > 0);
         if (!stage3Alive) {
-          storyText.textContent = "太驚人了！你成功擊敗了遠古頭目，解鎖了通往其他星系的航道！";
+          storyText.textContent = "太驚人了！你成功擊敗了虛空魔菌，拯救了這個破碎世界！";
           storyBanner.classList.add('active');
-          storyStage = 20;
+          storyStage = 13;
           isAttacking = false;
           return;
         }
@@ -848,7 +653,7 @@
     }
 
     function processMonsterTurnAfterAction() {
-      const currentActiveUnits = storyStage === 3 
+      const currentActiveUnits = storyStage === 5 
         ? Array.from(document.querySelectorAll('.stage-1-unit'))
         : (storyStage === 8 ? Array.from(document.querySelectorAll('.stage-2-unit')) : Array.from(document.querySelectorAll('.stage-3-unit')));
 
@@ -949,7 +754,7 @@
 
       if (playerHp <= 0) {
         setTimeout(() => {
-          storyText.textContent = "挑戰失敗！你的隊伍在虛空中被徹底吞噬... 點擊此處返回地圖。";
+          storyText.textContent = "挑戰失敗！你的隊伍被異空間的真菌吞噬了... 點擊此處返回地圖。";
           storyBanner.classList.add('active');
           storyStage = 999;
           skillBookBtn.classList.add('disabled');
@@ -968,5 +773,6 @@
       }
     }
   </script>
+
 </body>
 </html>
