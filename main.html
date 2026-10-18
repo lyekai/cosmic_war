@@ -337,17 +337,17 @@
     }
 
     // ==========================================
-    // 自動隨機生成數學題目的核心函式
+    // 自動隨機生成數學題目的核心函式 (範圍已改為 -30 ~ 30)
     // ==========================================
     function getRandomInt(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
     function generateRandomMathProblem(targetValue) {
-      let n1 = getRandomInt(-100, 100);
-      let n2 = getRandomInt(-100, 100);
-      let n3 = getRandomInt(-100, 100);
-      let n4 = getRandomInt(-100, 100);
+      let n1 = getRandomInt(-30, 30);
+      let n2 = getRandomInt(-30, 30);
+      let n3 = getRandomInt(-30, 30);
+      let n4 = getRandomInt(-30, 30);
 
       let ops = ['+', '-'];
       let op1 = ops[Math.floor(Math.random() * ops.length)];
@@ -368,7 +368,7 @@
         let diff = targetValue - finalVal;
         let adjustedN4 = op3 === '+' ? (n4 + diff) : (n4 - diff);
         
-        if (adjustedN4 >= -100 && adjustedN4 <= 100) {
+        if (adjustedN4 >= -30 && adjustedN4 <= 30) {
           qStr = `${formatNum(n1)} ${op1} ${formatNum(n2)} ${op2} ${formatNum(n3)} ${op3} ${formatNum(adjustedN4)}`;
           return qStr;
         } else {
@@ -603,7 +603,6 @@
           currentHp = Math.max(0, currentHp - attackValue);
           targetUnit.dataset.hp = currentHp;
 
-          // 對應調整小怪與 Boss 的最大血量判定 (小怪血量改為 250)
           const maxHp = targetUnit.dataset.index === "6" ? 1000 : 250;
           const hpPercent = (currentHp / maxHp) * 100;
           const monsterIndex = targetUnit.dataset.index;
