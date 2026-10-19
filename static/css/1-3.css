@@ -925,8 +925,8 @@ body, html {
     }
 
     .boss-img-wrapper img {
-        width: 180% !important;
-        height: 180% !important;
+        width: 150% !important;
+        height: 150% !important;
         object-fit: contain;
     }
 
