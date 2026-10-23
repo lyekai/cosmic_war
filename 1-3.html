@@ -234,6 +234,26 @@
     <div class="battle-intro-text" id="battleIntroText">FINAL BATTLE</div>
   </div>
 
+  <!-- RPG 載入動畫層 -->
+  <div id="loading-overlay">
+    <div class="loading-title">LOADING WORLD...</div>
+    <div class="loading-bar-container">
+      <div class="loading-bar-fill" id="loadingBarFill"></div>
+    </div>
+    <div class="loading-percentage" id="loadingPercentage">0%</div>
+  </div>
+
+  <!-- 全螢幕護盾圖片層 -->
+  <img id="shield-image-layer" src="/static/image/shield.png" alt="護盾特效">
+
+  <!-- 嵌入動態背景 -->
+  <iframe id="bg-frame" src="background.html"></iframe>
+
+  <!-- 遊戲主畫面 (其餘內容保持不變) -->
+  <div class="game-container" id="gameContainer">
+    <!-- ... (略，維持原本的 monsters-arena 與 player-section 等內容) ... -->
+  </div>
+
   <script>
     const skillBookBtn = document.getElementById('skillBookBtn');
     const modalOverlay = document.getElementById('action-modal-overlay');
@@ -260,6 +280,52 @@
     const bossImgWrapper = document.getElementById('bossImgWrapper');
     const bossInfoModal = document.getElementById('boss-info-modal');
     const bossInfoCloseBtn = document.getElementById('bossInfoCloseBtn');
+    // ==========================================
+    // 載入進度模擬與 iframe 實際載入監聽
+    // ==========================================
+    const loadingOverlay = document.getElementById('loading-overlay');
+    const loadingBarFill = document.getElementById('loadingBarFill');
+    const loadingPercentage = document.getElementById('loadingPercentage');
+    const bgFrame = document.getElementById('bg-frame');
+
+    let loadProgress = 0;
+    let isBgLoaded = false;
+
+    // 模擬平滑進度條 (讓玩家有視覺回饋)
+    const progressInterval = setInterval(() => {
+      if (loadProgress < 90) {
+        loadProgress += Math.floor(Math.random() * 5) + 2;
+        if (loadProgress > 90) loadProgress = 90;
+        updateLoadingUI(loadProgress);
+      }
+    }, 50);
+
+    function updateLoadingUI(percent) {
+      loadingBarFill.style.width = `${percent}%`;
+      loadingPercentage.textContent = `${percent}%`;
+    }
+
+    // 當 iframe (background.html) 真正載入完成時觸發
+    bgFrame.addEventListener('load', () => {
+      isBgLoaded = true;
+      finishLoading();
+    });
+
+    // 預防萬一 iframe 載入太快或觸發失敗，設定最長等待時間 3 秒強制進入
+    setTimeout(() => {
+      if (!isBgLoaded) {
+        finishLoading();
+      }
+    }, 3000);
+
+    function finishLoading() {
+      clearInterval(progressInterval);
+      updateLoadingUI(100);
+      setTimeout(() => {
+        loadingOverlay.classList.add('fade-out');
+      }, 300);
+    }
+
     let pressTimer = null;
 
     let selectedValue = null;
